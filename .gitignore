@@ -35,3 +35,7 @@
 .vscode/*
 .pioenvs
 .piolibdeps
+
+.travis.yml
+platformio.ini
+lib/
