@@ -1,9 +1,10 @@
-#include "cloud4rpi.h"
+#include "Cloud4RPi.h"
 
-Cloud4RPi::Cloud4RPi(const char *deviceToken, const char* server) {
-    _deviceToken = deviceToken;
-    _server = server;
+Cloud4RPi::Cloud4RPi(String deviceToken, String server) {
+    deviceToken_ = deviceToken;
+    server_ = server;
 }
+
 void Cloud4RPi::printLogo() {
     Serial.println("");
     Serial.println("_________ .__                   .___ _________________________.__ ");

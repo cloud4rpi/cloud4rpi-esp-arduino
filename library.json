@@ -17,7 +17,7 @@
       }
     ],
     "version": "0.0.1",
-    "examples": "examples/*/*.cpp",
+    "examples": "examples/*.cpp",
     "frameworks": "arduino",
-    "platforms": "espressif8266"
+    "platforms": "*"
   }
