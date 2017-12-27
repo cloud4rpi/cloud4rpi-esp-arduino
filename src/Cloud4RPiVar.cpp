@@ -1,11 +1,22 @@
-#include "Cloud4RPiVar.h";
+#include "Cloud4RPiVar.h"
 
 C4RVariableBase::C4RVariableBase(const String& _name) :
 	name(_name) {
 }
 
-int C4RVariableList::count() {
-  return itemCount;
+
+C4RVariableList::~C4RVariableList() {
+  ListNode* node;
+  while(root != NULL) {
+    node = root;
+    root = root->next;
+    delete node;
+  }
+  count = 0;
+}
+
+int C4RVariableList::size() {
+  return count;
 }
 
 C4RVariableBase* C4RVariableList::find(const String& _name) {
@@ -25,6 +36,6 @@ int C4RVariableList::add(C4RVariableBase* _variable) {
   node->next = root;
   node->data = _variable;
   root = node;
-  itemCount++;
+  count++;
   return 0;
 }

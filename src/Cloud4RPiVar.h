@@ -31,11 +31,11 @@ class C4RVariableList {
 		ListNode* next;
 	};
 private:
-	unsigned int itemCount = 0;
+	unsigned int count = 0;
  	ListNode* root;
-	ListNode* last;
 public:
-	int count();
+	~C4RVariableList();
+	int size();
 	int add(C4RVariableBase* _variable);
 	C4RVariableBase* find(const String& name);
 };
