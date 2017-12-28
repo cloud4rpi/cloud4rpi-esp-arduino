@@ -35,14 +35,14 @@ class C4RVariableList {
 		C4RVariableBase* data;
 		ListNode* next;
 	};
-private:
-	unsigned int count = 0;
- 	ListNode* root;
-public:
-	~C4RVariableList();
-	int size();
-	void add(C4RVariableBase* _variable);
-	C4RVariableBase* find(const String& name);
+	private:
+		unsigned int count = 0;
+		ListNode* root;
+	public:
+		~C4RVariableList();
+		int size();
+		void add(C4RVariableBase* _variable);
+		C4RVariableBase* find(const String& name);
 };
 
 // C4RVariableStorage
@@ -51,30 +51,30 @@ class C4RVariableStorage {
 private:
 	C4RVariableList* list;
 public:
-		C4RVariableStorage();
-		~C4RVariableStorage();
-		int size();
-		bool exists(const String& varName);
+	C4RVariableStorage();
+	~C4RVariableStorage();
+	int size();
+	bool exists(const String& varName);
 
-		template<typename T>
-    void declare(const String& varName) {
+	template<typename T>
+	void declare(const String& varName) {
 			C4RVariable<T>* item = new C4RVariable<T>(varName, T());
 			list->add(item);
 			C4RVariable<T>* var = (C4RVariable<T>*)list->find(varName);
 		}
-		template<typename T>
-		T getValue(const String& varName) {
-			C4RVariable<T>* var = (C4RVariable<T>*)list->find(varName);
-			Serial.println("GET " + var->name + " " + String(var->value));
-			return var->value;
-		}
+	template<typename T>
+	T getValue(const String& varName) {
+		C4RVariable<T>* var = (C4RVariable<T>*)list->find(varName);
+		Serial.println("GET " + var->name + " " + String(var->value));
+		return var->value;
+	}
 
-		template<typename T>
-		void setValue(const String& varName, T _value) {
-			C4RVariable<T>* item = (C4RVariable<T>*)list->find(varName);
-			if (item) {
-				Serial.println("SET " + item->name + " " + String(_value));
-				item->value = _value;
-			}
+	template<typename T>
+	void setValue(const String& varName, T _value) {
+		C4RVariable<T>* item = (C4RVariable<T>*)list->find(varName);
+		if (item) {
+			Serial.println("SET " + item->name + " " + String(_value));
+			item->value = _value;
 		}
+	}
 };
