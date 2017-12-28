@@ -4,6 +4,7 @@ C4RVariableBase::C4RVariableBase(const String& _name) :
 	name(_name) {
 }
 
+// C4RVariableList
 
 C4RVariableList::~C4RVariableList() {
   ListNode* node;
@@ -31,11 +32,31 @@ C4RVariableBase* C4RVariableList::find(const String& _name) {
 	return NULL;
 }
 
-int C4RVariableList::add(C4RVariableBase* _variable) {
+void C4RVariableList::add(C4RVariableBase* _variable) {
 	ListNode* node = new ListNode();
   node->next = root;
   node->data = _variable;
   root = node;
   count++;
-  return 0;
+}
+
+// C4RVariableStorage
+
+C4RVariableStorage::C4RVariableStorage() :
+  list(new C4RVariableList()) {
+}
+
+C4RVariableStorage::~C4RVariableStorage() {
+  if (list != NULL) {
+    delete list;
+    list = NULL;
+  }
+}
+
+int C4RVariableStorage::size() {
+  return list->size();
+}
+
+bool C4RVariableStorage::exists(const String& varName) {
+  return list->find(varName) != NULL;
 }

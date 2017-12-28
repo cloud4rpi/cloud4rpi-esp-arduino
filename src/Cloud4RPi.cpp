@@ -1,23 +1,30 @@
 #include "Cloud4RPi.h"
 
+const int JSON_BUFFER_SIZE = 500;
+
 Cloud4RPi::Cloud4RPi(const String &_deviceToken, const String &_server, int _port) :
     deviceToken(_deviceToken),
     server(_server),
     port(_port),
-    mqttClient(NULL) {
-      // Empty
-}
-
-void Cloud4RPi::begin(Client& _client) {
-  mqttClient = new PubSubClient(_client);
-  mqttClient->setServer(server.c_str(), port);
+    mqttClient(NULL),
+    jsonBufferSize(JSON_BUFFER_SIZE),
+    variables(new C4RVariableStorage()) {
 }
 
 Cloud4RPi::~Cloud4RPi() {
-  if (mqttClient == NULL) {
+  if (mqttClient != NULL) {
     delete mqttClient;
     mqttClient = NULL;
   };
+
+  if (variables != NULL) {
+    delete variables;
+    variables = NULL;
+  }
+}
+void Cloud4RPi::begin(Client& _client) {
+  mqttClient = new PubSubClient(_client);
+  mqttClient->setServer(server.c_str(), port);
 }
 
 bool Cloud4RPi::loop() {
@@ -30,7 +37,7 @@ bool Cloud4RPi::connected() {
 
 bool Cloud4RPi::ensureConnection(int maxReconnectAttempts, int reconnectTimeout) {
     int attempt = 0;
-    bool forever = maxReconnectAttempts == RETRY_FOREVER;
+    bool forever = maxReconnectAttempts <= C4R_RETRY_FOREVER;
     while (!this->connected()) {
         if (!forever && attempt > maxReconnectAttempts) {
             break;
@@ -51,6 +58,109 @@ bool Cloud4RPi::ensureConnection(int maxReconnectAttempts, int reconnectTimeout)
         }
     }
     return false;
+}
+
+void Cloud4RPi::declareBoolVariable(const String& varName) {
+  if (!isVariableExists(varName)) {
+    variables->declare<bool>(varName);
+  }
+}
+
+void Cloud4RPi::declareNumericVariable(const String& varName) {
+  if (!isVariableExists(varName)) {
+    variables->declare<double>(varName);
+  }
+}
+
+void Cloud4RPi::declareStringVariable(const String& varName) {
+  if (!isVariableExists(varName)) {
+    variables->declare<char*>(varName);
+  }
+}
+bool Cloud4RPi::isVariableExists(const String& varName) {
+  bool exists = variables->exists(varName);
+  if (exists) {
+    Serial.print("WARN! Duplicate '");
+    Serial.print(varName);
+    Serial.println("' variable declaration");
+  }
+  return exists;
+}
+bool Cloud4RPi::getBoolValue(const String& varName) {
+  return variables->getValue<bool>(varName);
+}
+double Cloud4RPi::getNumericValue(const String& varName) {
+  return variables->getValue<double>(varName);
+}
+String Cloud4RPi::getStringValue(const String& varName) {
+  return String(variables->getValue<char*>(varName));
+}
+
+void Cloud4RPi::setVariable(const String& varName, bool value) {
+  variables->setValue(varName, value);
+}
+
+void Cloud4RPi::setVariable(const String& varName, int value) {
+  variables->setValue(varName, (double)value);
+}
+
+void Cloud4RPi::setVariable(const String& varName, unsigned int value) {
+    variables->setValue(varName, (double)value);
+}
+
+void Cloud4RPi::setVariable(const String& varName, long value) {
+  variables->setValue(varName, (double)value);
+}
+
+void Cloud4RPi::setVariable(const String& varName, unsigned long value) {
+  variables->setValue(varName, (double)value);
+}
+
+void Cloud4RPi::setVariable(const String& varName, float value) {
+  variables->setValue(varName, (double)value);
+}
+
+void Cloud4RPi::setVariable(const String& varName, double value) {
+  variables->setValue(varName, value);
+}
+void Cloud4RPi::setVariable(const String& varName, String value) {
+  variables->setValue(varName, value);
+}
+
+bool Cloud4RPi::publishConfig() {
+  DynamicJsonBuffer json(jsonBufferSize);
+  JsonObject& root = json.createObject();
+  JsonArray &payload = root.createNestedArray("payload");
+  //TODO
+  // for(int i = 0; i < variables.size(); i++) {
+  //     JsonObject& myVar = payload.createNestedObject();
+  //     myVar["name"] = variables[n].name;
+  //     myVar["type"] = variables[n].type;
+  // }
+  return this->publishCore(root, "/config");
+}
+
+bool Cloud4RPi::publishData() {
+}
+
+bool Cloud4RPi::publishCore(JsonObject& root, const String& subTopic) {
+    if(!this->connected()) {
+        return false;
+    }
+    String topic = "devices/" + deviceToken + subTopic;
+    Serial.print(topic);
+    // TODO impl
+    // if(currentTime.length() > 0) root["ts"] = currentTime.c_str();
+    int length = root.measureLength() + 1;
+    char buffer[length];
+    root.printTo(buffer, length);
+    bool result = mqttClient->publish(topic.c_str(), buffer);
+
+    Serial.print(result ? "[OK ps=" : "[FAIL! ps=");
+    //Serial.print(5 + 2 + strlen(topic.c_str()) + strlen(buffer));  //FIXME: Packages longer then 128 (MQTT_MAX_PACKET_SIZE) are failing!
+    Serial.print(("] " + topic + " <--- ").c_str());
+    Serial.println(buffer);
+    return result;
 }
 
 void Cloud4RPi::printLogo() {
