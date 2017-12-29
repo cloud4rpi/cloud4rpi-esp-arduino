@@ -2,7 +2,6 @@
 #include <Cloud4RPi.h>
 
 const String deviceToken = "__YOUR__DEVICE_TOKEN__";
-
 Cloud4RPi c4r(deviceToken);
 
 // WiFi
@@ -27,8 +26,9 @@ void setup() {
     c4r.declareNumericVariable("Uptime");
     c4r.declareStringVariable("Asterix");
 
-    //c4r.publishConfig();
+    c4r.publishConfig();
     c4r.loop();
+
     delay(1000);
 }
 

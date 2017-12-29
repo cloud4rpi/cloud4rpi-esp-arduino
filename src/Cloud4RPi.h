@@ -1,6 +1,5 @@
 #ifndef Cloud4RPi_h
 #define Cloud4RPi_h
-#endif
 
 #include <Arduino.h>
 #include <ArduinoJson.h>
@@ -10,6 +9,10 @@
 namespace {
     const String& MQTT_SERVER = "mq.cloud4rpi.io";
     const int MQTT_PORT = 1883;
+
+    const String& C4R_VAR_BOOL = "bool";
+    const String& C4R_VAR_NUMERIC = "numeric";
+    const String& C4R_VAR_STRING = "string";
 }
 
 const int C4R_RECONNECT_TIMEOUT = 3000; // milliseconds
@@ -66,3 +69,4 @@ private:
     bool isVariableExists(const String& varName);
     bool publishCore(JsonObject& root, const String& subTopic);
 };
+#endif
