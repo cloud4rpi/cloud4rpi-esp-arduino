@@ -68,5 +68,6 @@ private:
 
     bool isVariableExists(const String& varName);
     bool publishCore(JsonObject& root, const String& subTopic);
+    JsonVariant getVariantValue(const String& name, const String& type);
 };
 #endif

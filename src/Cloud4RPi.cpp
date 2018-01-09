@@ -40,7 +40,7 @@ bool Cloud4RPi::ensureConnection(int maxReconnectAttempts, int reconnectTimeout)
     bool forever = maxReconnectAttempts <= C4R_RETRY_FOREVER;
     while (!this->connected()) {
         if (!forever && attempt > maxReconnectAttempts) {
-            break;
+            return false;
         }
         Serial.print("Attempting to connect to Cloud4PRi broker, (#");
         Serial.print(++attempt);
@@ -57,7 +57,7 @@ bool Cloud4RPi::ensureConnection(int maxReconnectAttempts, int reconnectTimeout)
             delay(reconnectTimeout);
         }
     }
-    return false;
+    return true;
 }
 
 void Cloud4RPi::declareBoolVariable(const String& varName) {
@@ -87,17 +87,17 @@ bool Cloud4RPi::isVariableExists(const String& varName) {
     return exists;
 }
 bool Cloud4RPi::getBoolValue(const String& varName) {
-      return variables->getValue<bool>(varName);
+    return variables->getValue<bool>(varName);
 }
 double Cloud4RPi::getNumericValue(const String& varName) {
-      return variables->getValue<double>(varName);
+    return variables->getValue<double>(varName);
 }
 String Cloud4RPi::getStringValue(const String& varName) {
-      return String(variables->getValue<char*>(varName));
+    return String(variables->getValue<char*>(varName));
 }
 
 void Cloud4RPi::setVariable(const String& varName, bool value) {
-  variables->setValue(varName, value);
+    variables->setValue(varName, value);
 }
 
 void Cloud4RPi::setVariable(const String& varName, int value) {
@@ -135,14 +135,36 @@ bool Cloud4RPi::publishConfig() {
     for(int i = 0; i < variables->size(); i++) {
         JsonObject& item = payload.createNestedObject();
         C4RVariableInfo info = variables->getVariableInfo(i);
-        Serial.println(info.name + " " + info.type);
         item["name"] = info.name;
         item["type"] = info.type;
     }
     return this->publishCore(root, "/config");
 }
 
+JsonVariant Cloud4RPi::getVariantValue(const String& name, const String& type) {
+    if(type == C4R_VAR_BOOL) {
+      return this->getBoolValue(name);
+    }
+    if(type == C4R_VAR_NUMERIC) {
+      return this->getNumericValue(name);
+    }
+    if(type == C4R_VAR_STRING) {
+      return variables->getValue<char*>(name);
+      //FIXME - do not use this->getStringValue(name).c_str() ;
+    }
+    return NULL;
+}
+
 bool Cloud4RPi::publishData() {
+    DynamicJsonBuffer json(jsonBufferSize);
+    JsonObject& root = json.createObject();
+    JsonObject &payload = root.createNestedObject("payload");
+
+    for(int i = 0; i < variables->size(); i++) {
+        C4RVariableInfo info = variables->getVariableInfo(i);
+        payload[info.name] = this->getVariantValue(info.name, info.type);
+    }
+    return this->publishCore(root, "/data");
 }
 
 bool Cloud4RPi::publishCore(JsonObject& root, const String& subTopic) {
@@ -159,7 +181,8 @@ bool Cloud4RPi::publishCore(JsonObject& root, const String& subTopic) {
     bool result = mqttClient->publish(topic.c_str(), buffer);
 
     Serial.print(result ? "[OK ps=" : "[FAIL! ps=");
-    //Serial.print(5 + 2 + strlen(topic.c_str()) + strlen(buffer));  //FIXME: Packages longer then 128 (MQTT_MAX_PACKET_SIZE) are failing!
+    Serial.print(5 + 2 + strlen(topic.c_str()) + strlen(buffer));
+    //FIXME: Packages longer then 128 (MQTT_MAX_PACKET_SIZE) are failing!
     Serial.print(("] " + topic + " <--- ").c_str());
     Serial.println(buffer);
     return result;

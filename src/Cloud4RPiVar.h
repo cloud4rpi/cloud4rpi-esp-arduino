@@ -94,14 +94,14 @@ public:
     template<typename T>
     T getValue(const String& varName) {
         C4RVariable<T>* var = (C4RVariable<T>*)list->find(varName);
-        Serial.println("GET " + var->getName() + " " + String(var->getValue()));
+        //Serial.println("GET " + var->getName() + " " + String(var->getValue()));
         return var->getValue();
     }
     template<typename T>
     void setValue(const String& varName, T _value) {
         C4RVariable<T>* var = (C4RVariable<T>*)list->find(varName);
         if (var) {
-            Serial.println("SET " + var->getName() + " " + String(_value));
+            //Serial.println("SET " + var->getName() + " " + String(_value));
             var->setValue(_value);
         }
     }

@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <Cloud4RPi.h>
 
@@ -20,8 +21,8 @@ void setup() {
 
     c4r.begin(wifiClient);
     c4r.printLogo();
+    c4r.ensureConnection();
 
-    //c4r.ensureConnection();
     c4r.declareBoolVariable("On/Off");
     c4r.declareNumericVariable("Uptime");
     c4r.declareStringVariable("Asterix");
@@ -33,26 +34,30 @@ void setup() {
 }
 
 void loop() {
-   ensureWiFiConnection();
-  if (1 || c4r.ensureConnection(3)) { // number of attempts
+    ensureWiFiConnection();
+    if (c4r.ensureConnection(3)) { // number of attempts
+        bool b = c4r.getBoolValue("On/Off");
+        double n = c4r.getNumericValue("Uptime");
+        String s = c4r.getStringValue("Asterix");
 
-    bool b = c4r.getBoolValue("On/Off");
-    double n = c4r.getNumericValue("Uptime");
-    String s = c4r.getStringValue("Asterix");
+        Serial.println("BOOL=" + String(b));
+        Serial.println("NUM=" + String(n));
+        Serial.println("STR=" + s);
 
-    Serial.println("BOOL=" +  String(b));
-    Serial.println("NUM=" +  String(n));
-    Serial.println("STR=" +  String(s));
+        c4r.setVariable("On/Off",  !b);
+        c4r.setVariable("Uptime", millis());
+        c4r.setVariable("Asterix",  String(s + "*"));
 
-    c4r.setVariable("On/Off",  !b);
-    c4r.setVariable("Uptime", millis());
-    c4r.setVariable("Asterix",  String(s + "*"));
+        c4r.publishData();
 
-    timerCountDown = publishPeriod;
-    while(timerCountDown--) {
-      c4r.loop();
-      delay(1000);
-    }
+        timerCountDown = publishPeriod;
+        while(timerCountDown--) {
+          Serial.print(".");
+          c4r.loop();
+
+          delay(1000);
+        }
+        Serial.println("");
   }
 }
 
