@@ -19,6 +19,8 @@ const int C4R_RECONNECT_TIMEOUT = 3000; // milliseconds
 const byte C4R_RETRY_FOREVER = -1;
 
 class Cloud4RPi {
+friend class C4RMqttCallback;
+
 public:
     Cloud4RPi(const String &deviceToken, const String &server = MQTT_SERVER, int port = MQTT_PORT);
     ~Cloud4RPi();
@@ -36,7 +38,7 @@ public:
     bool connected();
     bool loop();
 
-    void declareBoolVariable(const String& varName);
+    void declareBoolVariable(const String& varName, C4R_HANDLER_SIGNATURE = NULL);
     void declareNumericVariable(const String& varName);
     void declareStringVariable(const String& varName);
 
@@ -57,6 +59,7 @@ public:
     bool publishData();
 
     void printLogo();
+
 private:
     String deviceToken;
     String server;
@@ -69,5 +72,7 @@ private:
     bool isVariableExists(const String& varName);
     bool publishCore(JsonObject& root, const String& subTopic);
     JsonVariant getVariantValue(const String& name, const String& type);
+    void mqttCallback(char* topic, byte* payload, unsigned int length);
+    void onCommand(const String& command, bool value);
 };
 #endif

@@ -2,6 +2,19 @@
 
 const int JSON_BUFFER_SIZE = 500;
 
+class C4RMqttCallback {
+public:
+    C4RMqttCallback(Cloud4RPi& _client) :
+        client(_client) {
+        }
+
+    void operator()(char* topic, byte* payload, unsigned int length) {
+        client.mqttCallback(topic, payload, length);
+    }
+private:
+    Cloud4RPi &client;
+};
+
 Cloud4RPi::Cloud4RPi(const String &_deviceToken, const String &_server, int _port) :
     deviceToken(_deviceToken),
     server(_server),
@@ -25,6 +38,7 @@ Cloud4RPi::~Cloud4RPi() {
 void Cloud4RPi::begin(Client& _client) {
     mqttClient = new PubSubClient(_client);
     mqttClient->setServer(server.c_str(), port);
+    mqttClient->setCallback(C4RMqttCallback(*this));
 }
 
 bool Cloud4RPi::loop() {
@@ -46,6 +60,11 @@ bool Cloud4RPi::ensureConnection(int maxReconnectAttempts, int reconnectTimeout)
         Serial.print(++attempt);
         Serial.println(")...");
         if (mqttClient->connect(deviceToken.c_str())) {
+
+            String command = "devices/" + deviceToken + "/commands";
+            mqttClient->subscribe(command.c_str()); //subscribe to commands
+            Serial.println("Listen for" + command);
+
             Serial.println("Connected!");
             return true;
         } else {
@@ -60,10 +79,10 @@ bool Cloud4RPi::ensureConnection(int maxReconnectAttempts, int reconnectTimeout)
     return true;
 }
 
-void Cloud4RPi::declareBoolVariable(const String& varName) {
+void Cloud4RPi::declareBoolVariable(const String& varName, C4R_HANDLER_SIGNATURE) {
     if (!isVariableExists(varName)) {
-        variables->declare<bool>(varName, C4R_VAR_BOOL);
-      }
+        variables->declare<bool>(varName, C4R_VAR_BOOL, cmdHandler);
+     }
 }
 
 void Cloud4RPi::declareNumericVariable(const String& varName) {
@@ -182,10 +201,50 @@ bool Cloud4RPi::publishCore(JsonObject& root, const String& subTopic) {
 
     Serial.print(result ? "[OK ps=" : "[FAIL! ps=");
     Serial.print(5 + 2 + strlen(topic.c_str()) + strlen(buffer));
-    //FIXME: Packages longer then 128 (MQTT_MAX_PACKET_SIZE) are failing!
     Serial.print(("] " + topic + " <--- ").c_str());
     Serial.println(buffer);
     return result;
+}
+
+void Cloud4RPi::mqttCallback(char* topic, byte* payload, unsigned int length) {
+    Serial.print("Message arrived [");
+    Serial.print(topic);
+    Serial.print("] ");
+    for (int i = 0; i < length; i++) {
+      Serial.print((char)payload[i]);
+    }
+    Serial.println();
+
+    DynamicJsonBuffer json(this->jsonBufferSize);
+    JsonObject& root = json.parseObject(payload);
+
+    if(!root.success()) {
+        Serial.println("ERROR! Unable to parse message");
+        return;
+    }
+    for(JsonObject::iterator it=root.begin(); it!=root.end(); ++it) {
+        // *it contains the key/value pair
+        const char* key = it->key;
+        // it->value contains the JsonVariant which can be casted as usual
+        bool value = it->value; // TODO other types!
+        this->onCommand(key, value);
+    }
+}
+void Cloud4RPi::onCommand(const String& command, bool value) {
+    if (variables->canHandleCommand(command)) {
+        bool newValue = variables->handleCommand<bool>(command, value);
+        Serial.print("Command: ");
+        Serial.print(command);
+        Serial.print(", Value: ");
+        Serial.println(newValue);
+
+        setVariable(command, newValue);
+        publishData();
+    } else {
+        Serial.print("No handler for '");
+        Serial.print(command);
+        Serial.println("' command.");
+    }
 }
 
 void Cloud4RPi::printLogo() {
