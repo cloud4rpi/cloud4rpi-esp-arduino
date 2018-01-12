@@ -80,6 +80,5 @@ void ensureWiFiConnection() {
 
 bool onLEDCommand(bool value) {
     digitalWrite(ledPin, value ? LOW : HIGH);
-    int current = digitalRead(ledPin);
-    return !(bool)current;
+    return !digitalRead(ledPin);
 }
