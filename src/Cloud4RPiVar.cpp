@@ -3,9 +3,14 @@
 C4RVariableBase::C4RVariableBase(const String& _name) :
     name(_name) {
 }
+
 String C4RVariableBase::getName() {
-  return name;
+    return name;
 }
+
+bool C4RVariableBase::hasHandler() {
+    return false;
+};
 
 // C4RVariableList
 

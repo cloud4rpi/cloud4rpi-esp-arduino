@@ -1,5 +1,5 @@
-#ifndef Cloud4RPiVar_h
-#define Cloud4RPiVar_h
+#ifndef _CLOUD4RPIVAR_H
+#define _CLOUD4RPIVAR_H
 
 #include <stddef.h>
 #include <Arduino.h>
@@ -27,7 +27,7 @@ public:
 
     String getName();
     virtual String getType() = 0;
-    virtual bool hasHandler() { return false; };
+    virtual bool hasHandler();
 };
 
 // C4RVariable<T>
@@ -39,16 +39,17 @@ private:
   T value;
   C4R_HANDLER_SIGNATURE;
 public:
-    C4RVariable(const String& _name, const String& _type, T _value);
+    C4RVariable(const String& _name, const String& _type, T _value) :
+        C4RVariableBase(_name),
+        type(_type),
+        value(_value) {
+    };
+
     virtual String getType() { return type; };
-    T getValue();
-    void setValue(T _value);
-    virtual bool hasHandler() { return this->cmdHandler != NULL; };
-
-    void setHandler(C4R_HANDLER_SIGNATURE) {
-        this->cmdHandler = cmdHandler;
-    }
-
+    T getValue() { return value; };
+    void setValue(T _value) { value = _value; }
+    bool hasHandler() {  return cmdHandler != NULL; };
+    void setHandler(C4R_HANDLER_SIGNATURE) { this->cmdHandler = cmdHandler; }
     T handleCommand(T value) {
         if (cmdHandler) {
             return cmdHandler(value);
@@ -56,22 +57,6 @@ public:
         return NULL;
     }
 };
-
-template<typename T>
-C4RVariable<T>::C4RVariable(const String& _name, const String& _type, T _value) :
-    C4RVariableBase(_name),
-    type(_type),
-    value(_value) {
-};
-
-template<typename T>
-void C4RVariable<T>::setValue(T _value) {
-  value = _value;
-}
-
-template<typename T>
-T C4RVariable<T>::getValue() { return value; };
-
 
 // C4RVariableList
 
@@ -118,7 +103,6 @@ public:
     template<typename T>
     T getValue(const String& varName) {
         C4RVariable<T>* var = (C4RVariable<T>*)list->find(varName);
-        //Serial.println("GET " + var->getName() + " " + String(var->getValue()));
         return var->getValue();
     }
 
@@ -126,7 +110,6 @@ public:
     void setValue(const String& varName, T _value) {
         C4RVariable<T>* var = (C4RVariable<T>*)list->find(varName);
         if (var) {
-            //Serial.println("SET " + var->getName() + " " + String(_value));
             var->setValue(_value);
         }
     }
@@ -142,4 +125,4 @@ public:
         return var->handleCommand(_value);
     }
 };
-#endif
+#endif // _CLOUD4RPIVAR_H

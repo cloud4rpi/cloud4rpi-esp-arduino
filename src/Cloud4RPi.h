@@ -1,5 +1,5 @@
-#ifndef Cloud4RPi_h
-#define Cloud4RPi_h
+#ifndef _CLOUD4RPI_H
+#define _CLOUD4RPI_H
 
 #include <Arduino.h>
 #include <ArduinoJson.h>
@@ -10,9 +10,11 @@ namespace {
     const String& MQTT_SERVER = "mq.cloud4rpi.io";
     const int MQTT_PORT = 1883;
 
-    const String& C4R_VAR_BOOL = "bool";
-    const String& C4R_VAR_NUMERIC = "numeric";
-    const String& C4R_VAR_STRING = "string";
+    const String& VAR_TYPE_BOOL = "bool";
+    const String& VAR_TYPE_NUMERIC = "numeric";
+    const String& VAR_TYPE_STRING = "string";
+
+    const int JSON_BUFFER_SIZE = 500;
 }
 
 const int C4R_RECONNECT_TIMEOUT = 3000; // milliseconds
@@ -59,14 +61,12 @@ public:
     bool publishData();
 
     void printLogo();
-
 private:
     String deviceToken;
     String server;
     int port;
     PubSubClient* mqttClient;
     C4RVariableStorage* variables;
-    C4RVariableBase* last;
     int jsonBufferSize;
 
     bool isVariableExists(const String& varName);
@@ -75,4 +75,4 @@ private:
     void mqttCallback(char* topic, byte* payload, unsigned int length);
     void onCommand(const String& command, bool value);
 };
-#endif
+#endif // _CLOUD4RPI_H

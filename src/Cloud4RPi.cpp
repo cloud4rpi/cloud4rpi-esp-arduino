@@ -1,13 +1,10 @@
 #include "Cloud4RPi.h"
 
-const int JSON_BUFFER_SIZE = 500;
-
 class C4RMqttCallback {
 public:
     C4RMqttCallback(Cloud4RPi& _client) :
         client(_client) {
         }
-
     void operator()(char* topic, byte* payload, unsigned int length) {
         client.mqttCallback(topic, payload, length);
     }
@@ -42,14 +39,23 @@ void Cloud4RPi::begin(Client& _client) {
 }
 
 bool Cloud4RPi::loop() {
+    if (mqttClient == NULL ) {
+        return false;
+    }
     return mqttClient->loop();
 }
 
 bool Cloud4RPi::connected() {
+    if (mqttClient == NULL ) {
+        return false;
+    }
     return mqttClient->connected();
 }
 
 bool Cloud4RPi::ensureConnection(int maxReconnectAttempts, int reconnectTimeout) {
+    if (mqttClient == NULL ) {
+        return false;
+    }
     int attempt = 0;
     bool forever = maxReconnectAttempts <= C4R_RETRY_FOREVER;
     while (!this->connected()) {
@@ -60,11 +66,9 @@ bool Cloud4RPi::ensureConnection(int maxReconnectAttempts, int reconnectTimeout)
         Serial.print(++attempt);
         Serial.println(")...");
         if (mqttClient->connect(deviceToken.c_str())) {
-
             String command = "devices/" + deviceToken + "/commands";
             mqttClient->subscribe(command.c_str()); //subscribe to commands
-            Serial.println("Listen for" + command);
-
+            Serial.println("Subscribing " + command);
             Serial.println("Connected!");
             return true;
         } else {
@@ -81,19 +85,19 @@ bool Cloud4RPi::ensureConnection(int maxReconnectAttempts, int reconnectTimeout)
 
 void Cloud4RPi::declareBoolVariable(const String& varName, C4R_HANDLER_SIGNATURE) {
     if (!isVariableExists(varName)) {
-        variables->declare<bool>(varName, C4R_VAR_BOOL, cmdHandler);
+        variables->declare<bool>(varName, VAR_TYPE_BOOL, cmdHandler);
      }
 }
 
 void Cloud4RPi::declareNumericVariable(const String& varName) {
       if (!isVariableExists(varName)) {
-        variables->declare<double>(varName, C4R_VAR_NUMERIC);
+        variables->declare<double>(varName, VAR_TYPE_NUMERIC);
       }
 }
 
 void Cloud4RPi::declareStringVariable(const String& varName) {
     if (!isVariableExists(varName)) {
-        variables->declare<char*>(varName, C4R_VAR_STRING);
+        variables->declare<char*>(varName, VAR_TYPE_STRING);
     }
 }
 bool Cloud4RPi::isVariableExists(const String& varName) {
@@ -161,13 +165,13 @@ bool Cloud4RPi::publishConfig() {
 }
 
 JsonVariant Cloud4RPi::getVariantValue(const String& name, const String& type) {
-    if(type == C4R_VAR_BOOL) {
+    if(type == VAR_TYPE_BOOL) {
       return this->getBoolValue(name);
     }
-    if(type == C4R_VAR_NUMERIC) {
+    if(type == VAR_TYPE_NUMERIC) {
       return this->getNumericValue(name);
     }
-    if(type == C4R_VAR_STRING) {
+    if(type == VAR_TYPE_STRING) {
       return variables->getValue<char*>(name);
       //FIXME - do not use this->getStringValue(name).c_str() ;
     }
@@ -222,11 +226,9 @@ void Cloud4RPi::mqttCallback(char* topic, byte* payload, unsigned int length) {
         Serial.println("ERROR! Unable to parse message");
         return;
     }
-    for(JsonObject::iterator it=root.begin(); it!=root.end(); ++it) {
-        // *it contains the key/value pair
-        const char* key = it->key;
-        // it->value contains the JsonVariant which can be casted as usual
-        bool value = it->value; // TODO other types!
+    for(JsonObject::iterator item=root.begin(); item!=root.end(); ++item) {
+        String key = item->key;
+        bool value = item->value; // TODO other types!
         this->onCommand(key, value);
     }
 }

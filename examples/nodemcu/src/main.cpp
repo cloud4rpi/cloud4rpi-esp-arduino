@@ -8,14 +8,14 @@ Cloud4RPi c4r(deviceToken);
 const char* wifiSSID = "__SSIID__";
 const char* wifiPassword = "__PASSWORD__";
 
-int ledPin = 2; // Build-in Led in NodeMCU
+int ledPin = D4; // nodemcu build-in led Pin = 2
 
 WiFiClient wifiClient;
 void ensureWiFiConnection();
 bool onLEDCommand(bool newValue);
 
 int timerCountDown = 0;
-const int  publishPeriod = 15; // in sec
+const int  publishPeriod = 10; // in sec
 
 void setup() {
     Serial.begin(9600);
@@ -57,7 +57,7 @@ void loop() {
         timerCountDown = publishPeriod;
         while(timerCountDown--) {
             c4r.loop();
-            
+
             Serial.print(".");
             delay(1000);
         }
