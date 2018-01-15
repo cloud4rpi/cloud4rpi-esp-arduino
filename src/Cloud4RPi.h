@@ -6,6 +6,23 @@
 #include <PubSubClient.h>
 #include "Cloud4RPiVar.h"
 
+#ifndef CLOUD4RPI_PRINTER
+#define CLOUD4RPI_PRINTER Serial
+#endif
+
+#ifndef CLOUD4RPI_DEBUG
+#define CLOUD4RPI_DEBUG 0
+#endif
+
+#if CLOUD4RPI_DEBUG > 0
+    #define CLOUD4RPI_PRINT(...) { CLOUD4RPI_PRINTER.print(__VA_ARGS__); }
+    #define CLOUD4RPI_PRINTLN(...) { CLOUD4RPI_PRINTER.println(__VA_ARGS__); }
+#else
+    #define CLOUD4RPI_PRINT(...) {}
+    #define CLOUD4RPI_PRINTLN(...) {}
+#endif
+
+
 namespace {
     const String& MQTT_SERVER = "mq.cloud4rpi.io";
     const int MQTT_PORT = 1883;
@@ -17,7 +34,7 @@ namespace {
     const int JSON_BUFFER_SIZE = 500;
 }
 
-const int C4R_RECONNECT_TIMEOUT = 3000; // milliseconds
+const int C4R_RECONNECT_TIMEOUT = 1000; // milliseconds
 const byte C4R_RETRY_FOREVER = -1;
 
 class Cloud4RPi {

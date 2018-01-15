@@ -8,14 +8,23 @@ Cloud4RPi c4r(deviceToken);
 const char* wifiSSID = "__SSIID__";
 const char* wifiPassword = "__PASSWORD__";
 
-int ledPin = D4; // nodemcu build-in led Pin = 2
+int ledPin = D4;
+int timerCountDown = 0;
+const int  publishPeriod = 15; // in sec
+
+const int featureCount = 6;
+String features[featureCount] = {
+    "Real time messaging using the MQTT protocol",
+    "Monitor device connection status",
+    "View device diagnostic data",
+    "Real time dashboard",
+    "Store and view data history",
+    "Alerts"
+};
 
 WiFiClient wifiClient;
 void ensureWiFiConnection();
 bool onLEDCommand(bool newValue);
-
-int timerCountDown = 0;
-const int  publishPeriod = 10; // in sec
 
 void setup() {
     Serial.begin(9600);
@@ -30,7 +39,7 @@ void setup() {
 
     c4r.declareBoolVariable("LEDOn", onLEDCommand);
     c4r.declareNumericVariable("Uptime");
-    c4r.declareStringVariable("Asterix");
+    c4r.declareStringVariable("Feature");
 
     c4r.publishConfig();
     c4r.loop();
@@ -41,18 +50,18 @@ void setup() {
 void loop() {
     ensureWiFiConnection();
     if (c4r.ensureConnection(3)) { // number of attempts
-        bool b = c4r.getBoolValue("LEDOn");
-        double n = c4r.getNumericValue("Uptime");
-        String s = c4r.getStringValue("Asterix");
-
-        Serial.println("BOOL=" + String(b));
-        Serial.println("NUM=" + String(n));
-        Serial.println("STR=" + s);
-
         c4r.setVariable("Uptime", millis());
-        c4r.setVariable("Asterix",  String(s + "*"));
+        c4r.setVariable("Feature", features[random(featureCount)]);
 
         c4r.publishData();
+
+        Serial.println("Variables state: ");
+        Serial.print("LEDOn = ");
+        Serial.println(c4r.getBoolValue("LEDOn"));
+        Serial.print("Uptime = ");
+        Serial.println(c4r.getNumericValue("Uptime"));
+        Serial.print("Feature = ");
+        Serial.println(c4r.getStringValue("Feature"));
 
         timerCountDown = publishPeriod;
         while(timerCountDown--) {

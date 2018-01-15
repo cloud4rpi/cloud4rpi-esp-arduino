@@ -62,21 +62,21 @@ bool Cloud4RPi::ensureConnection(int maxReconnectAttempts, int reconnectTimeout)
         if (!forever && attempt > maxReconnectAttempts) {
             return false;
         }
-        Serial.print("Attempting to connect to Cloud4PRi broker, (#");
-        Serial.print(++attempt);
-        Serial.println(")...");
+        CLOUD4RPI_PRINT("Attempting to connect to Cloud4PRi broker, (#");
+        CLOUD4RPI_PRINT(++attempt);
+        CLOUD4RPI_PRINTLN(")...");
         if (mqttClient->connect(deviceToken.c_str())) {
+            CLOUD4RPI_PRINTLN("Subscribing to the 'commands/' topic...");
             String command = "devices/" + deviceToken + "/commands";
             mqttClient->subscribe(command.c_str()); //subscribe to commands
-            Serial.println("Subscribing " + command);
-            Serial.println("Connected!");
+            CLOUD4RPI_PRINTLN("Connected!");
             return true;
         } else {
-            Serial.print("Connect Failed!, rc=");
-            Serial.print(mqttClient->state());
-            Serial.print(". Trying again in ");
-            Serial.print(reconnectTimeout);
-            Serial.println(" second...");
+            CLOUD4RPI_PRINT("Connect Failed!, rc=");
+            CLOUD4RPI_PRINT(mqttClient->state());
+            CLOUD4RPI_PRINT(". Trying again in ");
+            CLOUD4RPI_PRINT(reconnectTimeout);
+            CLOUD4RPI_PRINTLN(" second...");
             delay(reconnectTimeout);
         }
     }
@@ -103,9 +103,9 @@ void Cloud4RPi::declareStringVariable(const String& varName) {
 bool Cloud4RPi::isVariableExists(const String& varName) {
     bool exists = variables->exists(varName);
     if (exists) {
-        Serial.print("WARN! Duplicate '");
-        Serial.print(varName);
-        Serial.println("' variable declaration");
+        CLOUD4RPI_PRINT("WARN! Duplicate '");
+        CLOUD4RPI_PRINT(varName);
+        CLOUD4RPI_PRINTLN("' variable declaration");
     }
     return exists;
 }
@@ -195,35 +195,34 @@ bool Cloud4RPi::publishCore(JsonObject& root, const String& subTopic) {
         return false;
     }
     String topic = "devices/" + deviceToken + subTopic;
-    Serial.print(topic);
     // TODO impl
     // if(currentTime.length() > 0) root["ts"] = currentTime.c_str();
     int length = root.measureLength() + 1;
     char buffer[length];
     root.printTo(buffer, length);
+    CLOUD4RPI_PRINT((subTopic + " <-- ").c_str());
+    CLOUD4RPI_PRINTLN(buffer);
     bool result = mqttClient->publish(topic.c_str(), buffer);
-
-    Serial.print(result ? "[OK ps=" : "[FAIL! ps=");
-    Serial.print(5 + 2 + strlen(topic.c_str()) + strlen(buffer));
-    Serial.print(("] " + topic + " <--- ").c_str());
-    Serial.println(buffer);
+    if (!result) {
+        CLOUD4RPI_PRINTLN("FAIL!");
+    }
     return result;
 }
 
 void Cloud4RPi::mqttCallback(char* topic, byte* payload, unsigned int length) {
-    Serial.print("Message arrived [");
-    Serial.print(topic);
-    Serial.print("] ");
+    String s = String(topic);
+    CLOUD4RPI_PRINTLN("");
+    CLOUD4RPI_PRINT(s.substring(s.lastIndexOf("/")));
+    CLOUD4RPI_PRINT(" --> ");
     for (int i = 0; i < length; i++) {
-      Serial.print((char)payload[i]);
+      CLOUD4RPI_PRINT((char)payload[i]);
     }
-    Serial.println();
-
+    CLOUD4RPI_PRINTLN("");
     DynamicJsonBuffer json(this->jsonBufferSize);
     JsonObject& root = json.parseObject(payload);
 
     if(!root.success()) {
-        Serial.println("ERROR! Unable to parse message");
+        CLOUD4RPI_PRINTLN("ERROR! Unable to parse message");
         return;
     }
     for(JsonObject::iterator item=root.begin(); item!=root.end(); ++item) {
@@ -235,26 +234,21 @@ void Cloud4RPi::mqttCallback(char* topic, byte* payload, unsigned int length) {
 void Cloud4RPi::onCommand(const String& command, bool value) {
     if (variables->canHandleCommand(command)) {
         bool newValue = variables->handleCommand<bool>(command, value);
-        Serial.print("Command: ");
-        Serial.print(command);
-        Serial.print(", Value: ");
-        Serial.println(newValue);
-
         setVariable(command, newValue);
         publishData();
     } else {
-        Serial.print("No handler for '");
-        Serial.print(command);
-        Serial.println("' command.");
+        CLOUD4RPI_PRINT("No handler for '");
+        CLOUD4RPI_PRINT(command);
+        CLOUD4RPI_PRINTLN("' command.");
     }
 }
 
 void Cloud4RPi::printLogo() {
-    Serial.println("");
-    Serial.println("_________ .__                   .___ _________________________.__ ");
-    Serial.println("\\_   ___ \\|  |   ____  __ __  __| _//  |  \\______   \\______   \\__|");
-    Serial.println("/    \\  \\/|  |  /  _ \\|  |  \\/ __ |/   |  ||       _/|     ___/  |");
-    Serial.println("\\     \\___|  |_(  <_> )  |  / /_/ /    ^   /    |   \\|    |   |  |");
-    Serial.println(" \\______  /____/\\____/|____/\\____ \\____   ||____|_  /|____|   |__|");
-    Serial.println("        \\/                       \\/    |__|       \\/");
+    CLOUD4RPI_PRINTLN("");
+    CLOUD4RPI_PRINTLN("_________ .__                   .___ _________________________.__ ");
+    CLOUD4RPI_PRINTLN("\\_   ___ \\|  |   ____  __ __  __| _//  |  \\______   \\______   \\__|");
+    CLOUD4RPI_PRINTLN("/    \\  \\/|  |  /  _ \\|  |  \\/ __ |/   |  ||       _/|     ___/  |");
+    CLOUD4RPI_PRINTLN("\\     \\___|  |_(  <_> )  |  / /_/ /    ^   /    |   \\|    |   |  |");
+    CLOUD4RPI_PRINTLN(" \\______  /____/\\____/|____/\\____ \\____   ||____|_  /|____|   |__|");
+    CLOUD4RPI_PRINTLN("        \\/                       \\/    |__|       \\/");
 }
