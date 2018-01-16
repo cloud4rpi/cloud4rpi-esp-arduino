@@ -8,7 +8,7 @@ Cloud4RPi c4r(deviceToken);
 const char* wifiSSID = "__SSIID__";
 const char* wifiPassword = "__PASSWORD__";
 
-int ledPin = D4;
+int ledPin = BUILTIN_LED;
 int timerCountDown = 0;
 const int  publishPeriod = 15; // in sec
 
