@@ -31,6 +31,9 @@
 *.out
 *.app
 
+# Local development
+.DS_Store
+
 # VisualStudioCode
 .vscode/
 .pioenvs
