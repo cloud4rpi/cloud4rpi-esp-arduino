@@ -211,13 +211,13 @@ bool Cloud4RPi::publishCore(JsonObject& root, const String& subTopic) {
 
 void Cloud4RPi::mqttCallback(char* topic, byte* payload, unsigned int length) {
     String s = String(topic);
-    CLOUD4RPI_PRINTLN("");
+    CLOUD4RPI_PRINTLN();
     CLOUD4RPI_PRINT(s.substring(s.lastIndexOf("/")));
     CLOUD4RPI_PRINT(" --> ");
     for (int i = 0; i < length; i++) {
       CLOUD4RPI_PRINT((char)payload[i]);
     }
-    CLOUD4RPI_PRINTLN("");
+    CLOUD4RPI_PRINTLN();
     DynamicJsonBuffer json(this->jsonBufferSize);
     JsonObject& root = json.parseObject(payload);
 
@@ -244,7 +244,7 @@ void Cloud4RPi::onCommand(const String& command, bool value) {
 }
 
 void Cloud4RPi::printLogo() {
-    CLOUD4RPI_PRINTLN("");
+    CLOUD4RPI_PRINTLN();
     CLOUD4RPI_PRINTLN("_________ .__                   .___ _________________________.__ ");
     CLOUD4RPI_PRINTLN("\\_   ___ \\|  |   ____  __ __  __| _//  |  \\______   \\______   \\__|");
     CLOUD4RPI_PRINTLN("/    \\  \\/|  |  /  _ \\|  |  \\/ __ |/   |  ||       _/|     ___/  |");

@@ -48,7 +48,7 @@ void setup() {
 void loop() {
     ensureWiFiConnection();
     if (c4r.ensureConnection(3)) { // number of attempts
-        c4r.setVariable("Uptime", millis());
+        c4r.setVariable("Uptime", millis() % 1000);
         String newEvent = events[random(eventCount)];
         c4r.setVariable("State", newEvent);
 
@@ -58,7 +58,7 @@ void loop() {
         Serial.print("LEDOn = ");
         Serial.println(c4r.getBoolValue("LEDOn"));
         Serial.print("Uptime = ");
-        Serial.println(c4r.getNumericValue("Uptime"));
+        Serial.println(c4r.getNumericValue("Uptime"), 0);
         Serial.print("State = ");
         Serial.println(newEvent);
 
@@ -69,7 +69,7 @@ void loop() {
             Serial.print(".");
             delay(1000);
         }
-        Serial.println("");
+        Serial.println();
   }
 }
 
