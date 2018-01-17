@@ -5,8 +5,8 @@ const String deviceToken = "__YOUR__DEVICE_TOKEN__";
 Cloud4RPi c4r(deviceToken);
 
 // WiFi
-const char* wifiSSID = "__SSIID__";
-const char* wifiPassword = "__PASSWORD__";
+char wifiSSID[] = "__SSIID__";
+char wifiPassword[] = "__PASSWORD__";
 
 int ledPin = BUILTIN_LED;
 int timerCountDown = 0;
