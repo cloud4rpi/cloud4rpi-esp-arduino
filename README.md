@@ -10,15 +10,15 @@ Supported hardware:
 
 Supported IDEs:
 
-* [PlatformIO](http://platformio.org/)
+* [PlatformIO](http://platformio.org/platformio-ide)
 * [Arduino IDE](https://www.arduino.cc/en/main/software)
 
-The further instructions differ depending on your preferred IDE.
+The further instructions depends on your preferred IDE.
 
 # PlatformIO
 
-[Library in the PlatformIO Registry](http://platformio.org/lib/show/2045/cloud4rpi-esp-arduino)
+[Cloud4RPi library in PlatformIO Registry](http://platformio.org/lib/show/2045/cloud4rpi-esp-arduino)
 
 # Arduino IDE
 
-Not tested yet
+[to be supplied]
