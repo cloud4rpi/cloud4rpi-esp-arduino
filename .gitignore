@@ -31,8 +31,11 @@
 *.out
 *.app
 
+# Local development
+.DS_Store
+
 # VisualStudioCode
-.vscode/*
+.vscode/
 .pioenvs
 .piolibdeps
 
@@ -40,3 +43,4 @@
 platformio.ini
 lib/
 .vscode/c_cpp_properties.json
+.vscode/launch.json
