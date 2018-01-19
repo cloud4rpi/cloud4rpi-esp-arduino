@@ -24,7 +24,7 @@
           "name": "ArduinoJson"
       }
     ],
-    "version": "0.0.1",
+    "version": "0.0.2",
     "examples": "examples/*/*.ino",
     "frameworks": "arduino",
     "platforms": [
