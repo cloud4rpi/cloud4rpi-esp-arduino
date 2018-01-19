@@ -16,14 +16,10 @@
         "maintainer": true
       }
     ],
-    "dependencies": [
-      {
-          "name": "PubSubClient"
-      },
-      { 
-          "name": "ArduinoJson"
-      }
-    ],
+    "dependencies": {
+      "PubSubClient": "^2.6",
+      "ArduinoJson": "^5.12.0"
+    },
     "version": "0.0.2",
     "examples": "examples/*/*.ino",
     "frameworks": "arduino",
