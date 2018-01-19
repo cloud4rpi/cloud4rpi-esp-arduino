@@ -17,6 +17,18 @@ The further instructions depends on your preferred IDE.
 
 # PlatformIO
 
+1. Create the new PlatformIO project for your board as described in the PlatformIO documentation ([Visual Studio Code](http://docs.platformio.org/en/latest/ide/vscode.html#id3), [Atom](http://docs.platformio.org/en/latest/ide/atom.html#setting-up-the-project))
+2. Open your `platformio.ini` and add the following lines to the end:
+    ```
+    lib_deps =
+        cloud4rpi-esp-arduino
+
+    build_flags=
+        -DMQTT_MAX_PACKET_SIZE=1024
+        -DMQTT_MAX_TRANSFER_SIZE=128
+        -DCLOUD4RPI_DEBUG=1
+    ```
+
 [Cloud4RPi library in PlatformIO Registry](http://platformio.org/lib/show/2045/cloud4rpi-esp-arduino)
 
 # Arduino IDE
