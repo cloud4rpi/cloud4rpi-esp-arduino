@@ -17,10 +17,10 @@
       }
     ],
     "dependencies": {
-      "PubSubClient" : "~5.12.0",
-      "ArduinoJson": "~2.6"
+      "PubSubClient": "^2.6",
+      "ArduinoJson": "^5.12.0"
     },
-    "version": "0.0.1",
+    "version": "0.0.2",
     "examples": "examples/*/*.ino",
     "frameworks": "arduino",
     "platforms": [

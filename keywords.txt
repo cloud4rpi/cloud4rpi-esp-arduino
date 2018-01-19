@@ -1,0 +1,36 @@
+#######################################
+# Syntax Coloring Map For Cloud4RRi
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Cloud4RPi	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+begin	KEYWORD2
+ensureConnection	KEYWORD2
+connected	KEYWORD2
+declareBoolVariable	KEYWORD2
+declareNumericVariable	KEYWORD2
+declareStringVariable	KEYWORD2
+getBoolValue	KEYWORD2
+getNumericValue	KEYWORD2
+getStringValue	KEYWORD2
+setVariable	KEYWORD2
+publishConfig	KEYWORD2
+publishData	KEYWORD2
+loop	KEYWORD2
+printLogo	KEYWORD2
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+#######################################
+# Constants (LITERAL1)
+#######################################
