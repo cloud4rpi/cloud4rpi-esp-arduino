@@ -24,10 +24,13 @@ The further instructions depends on your preferred IDE.
         cloud4rpi-esp-arduino
 
     build_flags=
-        -DMQTT_MAX_PACKET_SIZE=1024
-        -DMQTT_MAX_TRANSFER_SIZE=128
-        -DCLOUD4RPI_DEBUG=1
+        -D MQTT_MAX_PACKET_SIZE=1024
+        -D MQTT_MAX_TRANSFER_SIZE=128
+        -D CLOUD4RPI_DEBUG=1
     ```
+4. Save the file and open the `src\main.cpp` file.
+5. Copy-paste the [sample code](https://github.com/cloud4rpi/cloud4rpi-esp-arduino/blob/master/examples/ESP8266/control.ino) into it.
+6. Hit the `Build` button.
 
 [Cloud4RPi library in PlatformIO Registry](http://platformio.org/lib/show/2045/cloud4rpi-esp-arduino)
 
