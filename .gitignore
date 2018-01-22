@@ -44,3 +44,5 @@ platformio.ini
 lib/
 .vscode/c_cpp_properties.json
 .vscode/launch.json
+.clang_complete
+.gcc-flags.json
