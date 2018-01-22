@@ -34,7 +34,7 @@ void setup() {
     c4r.printLogo();
     c4r.ensureConnection();
 
-    c4r.declareBoolVariable("LEDOn", onLEDCommand);
+    c4r.declareBoolVariable("LED On", onLEDCommand);
     c4r.declareNumericVariable("Uptime");
     c4r.declareStringVariable("State");
 
@@ -54,8 +54,8 @@ void loop() {
         c4r.publishData();
 
         Serial.println("Variables state: ");
-        Serial.print("LEDOn = ");
-        Serial.println(c4r.getBoolValue("LEDOn"));
+        Serial.print("LED On = ");
+        Serial.println(c4r.getBoolValue("LED On"));
         Serial.print("Uptime = ");
         Serial.println(c4r.getNumericValue("Uptime"), 0);
         Serial.print("State = ");
