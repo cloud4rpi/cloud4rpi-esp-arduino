@@ -2,15 +2,13 @@
 #include <Cloud4RPi.h>
 
 const String deviceToken = "__YOUR__DEVICE_TOKEN__";
-Cloud4RPi c4r(deviceToken);
-
-// WiFi
-char wifiSSID[] = "__SSIID__";
+char wifiSSID[] = "__SSID__";
 char wifiPassword[] = "__PASSWORD__";
 
 int ledPin = BUILTIN_LED;
+
 int timerCountDown = 0;
-const int  publishPeriod = 15; // in sec
+const int  publishPeriod = 15; // seconds
 
 const int eventCount = 3;
 String events[eventCount] = {
@@ -19,6 +17,7 @@ String events[eventCount] = {
     "BOOM!"
 };
 
+Cloud4RPi c4r(deviceToken);
 WiFiClient wifiClient;
 
 void ensureWiFiConnection();
