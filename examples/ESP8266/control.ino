@@ -2,15 +2,13 @@
 #include <Cloud4RPi.h>
 
 const String deviceToken = "__YOUR__DEVICE_TOKEN__";
-Cloud4RPi c4r(deviceToken);
-
-// WiFi
-char wifiSSID[] = "__SSIID__";
+char wifiSSID[] = "__SSID__";
 char wifiPassword[] = "__PASSWORD__";
 
 int ledPin = BUILTIN_LED;
+
 int timerCountDown = 0;
-const int  publishPeriod = 15; // in sec
+const int  publishPeriod = 15; // seconds
 
 const int eventCount = 3;
 String events[eventCount] = {
@@ -19,6 +17,7 @@ String events[eventCount] = {
     "BOOM!"
 };
 
+Cloud4RPi c4r(deviceToken);
 WiFiClient wifiClient;
 
 void ensureWiFiConnection();
@@ -35,7 +34,7 @@ void setup() {
     c4r.printLogo();
     c4r.ensureConnection();
 
-    c4r.declareBoolVariable("LEDOn", onLEDCommand);
+    c4r.declareBoolVariable("LED On", onLEDCommand);
     c4r.declareNumericVariable("Uptime");
     c4r.declareStringVariable("State");
 
@@ -55,8 +54,8 @@ void loop() {
         c4r.publishData();
 
         Serial.println("Variables state: ");
-        Serial.print("LEDOn = ");
-        Serial.println(c4r.getBoolValue("LEDOn"));
+        Serial.print("LED On = ");
+        Serial.println(c4r.getBoolValue("LED On"));
         Serial.print("Uptime = ");
         Serial.println(c4r.getNumericValue("Uptime"), 0);
         Serial.print("State = ");
