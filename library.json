@@ -20,6 +20,9 @@
       "PubSubClient": "^2.6",
       "ArduinoJson": "^5.12.0"
     },
+    "build": {
+      "flags": "-DMQTT_MAX_PACKET_SIZE=1024 -DMQTT_MAX_TRANSFER_SIZE=128"
+    },
     "version": "0.0.2",
     "examples": "examples/*/*.ino",
     "frameworks": "arduino",
