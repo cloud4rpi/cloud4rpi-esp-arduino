@@ -48,7 +48,7 @@ void setup() {
 void loop() {
     ensureWiFiConnection();
     if (c4r.ensureConnection(3)) { // number of attempts
-        c4r.setVariable("Uptime", millis() % 1000);
+        c4r.setVariable("Uptime", millis() / 1000);
         String newEvent = events[random(eventCount)];
         c4r.setVariable("State", newEvent);
 
