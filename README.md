@@ -2,7 +2,7 @@ Cloud4RPi Client Library for [Arduino](https://www.arduino.cc/) Framework
 =========================================================================
 
 
-This package provides a client library that simplifies the connection of Internet-enabled Arduino devices to the Cloud4RPi service.
+This package provides a client library that simplifies connecting Internet-enabled Arduino devices to the Cloud4RPi service.
 
 Currently supported hardware:
 
@@ -34,12 +34,12 @@ The [Cloud4RPi library](http://platformio.org/lib/show/2045/cloud4rpi-esp-arduin
 5. Copy-paste the [sample code](https://github.com/cloud4rpi/cloud4rpi-esp-arduino/blob/master/examples/ESP8266/control.ino) into it.
 4. [Log into your Cloud4RPi account](https://cloud4rpi.io/signin) or [create a new one](https://cloud4rpi.io/register).
 5. Copy [your device](https://cloud4rpi.io/devices)'s **Device Token**. If you have no devices, create one on the [Devices](https://cloud4rpi.io/devices) page and copy its **Device Token**.
-6. Replace the `__YOUR_DEVICE_TOKEN__` string with your real device token.
+6. Replace the `__YOUR_DEVICE_TOKEN__` string with your device token.
 7. Replace the `__SSID__` and `__PASSWORD__` strings with your Wi-Fi network data.
 7. If you know the pin number connected to an LED on your board, replace the `BUILTIN_LED` constant with it.
-6. Hit the `Build` button and wait until the compilation is complete.
+6. Hit the `Build` button and wait until the compilation is done.
 8. Connect the board in the flashing mode and hit the `Upload` button.
-9. Once the flashing is done, open `Serial Monitor` and watch the sample code executes.
+9. Once flashing is complete, open `Serial Monitor` and watch the sample code's output.
 8. Notice that the [device](https://cloud4rpi.io/devices) went online and started sending data.
 9. Go to the [Control Panels](https://cloud4rpi.io/control-panels/) page and add a new control panel.
 10. Add a new **Chart** widget and bind it to the `Uptime` variable.
