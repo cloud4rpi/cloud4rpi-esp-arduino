@@ -33,7 +33,7 @@ The [Cloud4RPi library](http://platformio.org/lib/show/2045/cloud4rpi-esp-arduin
         -D CLOUD4RPI_DEBUG=1
     ```
 4. Save the `platformio.ini` file and open the `src\main.cpp` file.
-5. Copy-paste the [sample code](https://github.com/cloud4rpi/cloud4rpi-esp-arduino/blob/master/examples/ESP8266/ESP8266.ino) into it. <!-- common part begins here -->
+5. Copy-paste the [sample code](examples/ESP8266/ESP8266.ino) into it. <!-- common part begins here -->
 4. [Log into your Cloud4RPi account](https://cloud4rpi.io/signin) or [create a new one](https://cloud4rpi.io/register).
 5. Copy [your device](https://cloud4rpi.io/devices)'s **Device Token**. If you have no devices, create one on the [Devices](https://cloud4rpi.io/devices) page and copy its **Device Token**.
 6. Replace the `__YOUR_DEVICE_TOKEN__` string with your device token.
