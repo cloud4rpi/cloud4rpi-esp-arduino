@@ -58,8 +58,8 @@ The [Cloud4RPi library](http://platformio.org/lib/show/2045/cloud4rpi-esp-arduin
     1. Open the `%HOMEPATH%\Documents\Arduino\libraries\PubSubClient\src\PubSubClient.h` file with any text editor (for instance, [VS Code](https://code.visualstudio.com)).
     2. Add the following define statements at the beginning:
         ```c
-            #define MQTT_MAX_PACKET_SIZE 1024
-            #define MQTT_MAX_TRANSFER_SIZE 128
+        #define MQTT_MAX_PACKET_SIZE 1024
+        #define MQTT_MAX_TRANSFER_SIZE 128
         ```
     3. Open the `%HOMEPATH%\Documents\Arduino\libraries\cloud4rpi-esp-arduino\src\Cloud4RPi.h` file and enable verbose output by adding the `#define CLOUD4RPI_DEBUG 0` line at the beginning.
 5. Open the sample code using the **File** | **Examples** | **cloud4rpi-esp-arduino** | **ESP8266** menu item. <!-- common part begins here -->
