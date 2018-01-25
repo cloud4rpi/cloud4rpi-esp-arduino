@@ -26,9 +26,11 @@ The [Cloud4RPi library](http://platformio.org/lib/show/2045/cloud4rpi-esp-arduin
         cloud4rpi-esp-arduino
 
     build_flags=
-        -D MQTT_MAX_PACKET_SIZE=1024   ; Required for PubSub library
-        -D MQTT_MAX_TRANSFER_SIZE=128  ; Required for PubSub library
-        -D CLOUD4RPI_DEBUG=1  ; Enables the verbose output to Serial
+    ; Required for PubSub library
+        -D MQTT_MAX_PACKET_SIZE=1024
+        -D MQTT_MAX_TRANSFER_SIZE=128
+    ; Enables the verbose output to Serial
+        -D CLOUD4RPI_DEBUG=1
     ```
 4. Save the `platformio.ini` file and open the `src\main.cpp` file.
 5. Copy-paste the [sample code](https://github.com/cloud4rpi/cloud4rpi-esp-arduino/blob/master/examples/ESP8266/control.ino) into it.
