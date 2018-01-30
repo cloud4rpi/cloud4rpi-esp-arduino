@@ -61,8 +61,8 @@ The [Cloud4RPi library](http://platformio.org/lib/show/2045/cloud4rpi-esp-arduin
         #define MQTT_MAX_PACKET_SIZE 1024
         #define MQTT_MAX_TRANSFER_SIZE 128
         ```
-    3. Open the `%HOMEPATH%\Documents\Arduino\libraries\cloud4rpi-esp-arduino\src\Cloud4RPi.h` file and enable verbose output by adding the `#define CLOUD4RPI_DEBUG 0` line at the beginning.
-5. Open the sample code using the **File** | **Examples** | **cloud4rpi-esp-arduino** | **ESP8266** menu item. <!-- common part begins here -->
+    3. Open the `%HOMEPATH%\Documents\Arduino\libraries\cloud4rpi-esp-arduino\src\Cloud4RPi.h` file and enable verbose output by adding the `#define CLOUD4RPI_DEBUG 1` line at the beginning.
+5. Open the sample code using the **File** | **Examples** | **cloud4rpi-esp-arduino** | **ESP8266** menu item. Restart Arduino IDE if this item did not appear. <!-- common part begins here -->
 4. [Log into your Cloud4RPi account](https://cloud4rpi.io/signin) or [create a new one](https://cloud4rpi.io/register).
 5. Copy [your device](https://cloud4rpi.io/devices)'s **Device Token**. If you have no devices, create one on the [Devices](https://cloud4rpi.io/devices) page and copy its **Device Token**.
 6. Replace the `__YOUR_DEVICE_TOKEN__` string with your device token.
