@@ -1,0 +1,26 @@
+language: python
+python:
+    - "2.7"
+
+env:
+    - PLATFORMIO_CI_SRC=examples/ESP8266/ESP8266.ino
+
+install:
+    - pip install -U platformio
+    #
+    # Libraries from PlatformIO Library Registry:
+    #
+    # http://platformio.org/lib/show/64/ArduinoJson
+    # http://platformio.org/lib/show/89/PubSubClient
+
+    - platformio lib -g install 64 89
+
+script:
+    - platformio ci --lib="." --board=nodemcuv2
+
+notifications:
+  slack:
+    on_success: change
+    on_failure: always
+    rooms:
+      secure: dlf8F08DjlxtTlg3ZA8rq8XQqhFnrBmH748xX0AH+lb7tNnYczT2bpGdhwUgC18heJvcMuEUDHb1sgt+72q7LEeaOsX8PsWbn7QRj5hiFX11MNVc4n3LJ34sScg5gFoNjteEU2UXmARTafZwmRLPw2XHwMeZZkRdkAXaD9FxUdw2oJ5W6lx0FKrBkVcQyLJpIqal1bwm/AwTLi2Q7jnWx3f+upbcu3pVnTMQMZSAuW8DVFohvKzifWJeVBI/LusreV7N+02SSOSzwnkNuP8LTK/jDOQGqUNddhM/47GwrKkK0KiCFOnLYsWCI6PwDvDDuTUgajBlBpFRR2kwpmyILKB6ciRrUmVkDd5djYfgfqOyl669iODt9dw7BDeh/9wunDWp1fkZgnU0CgvdvJ5DteopEZZj3mbjaURMRqMNA601wczvYP1jfiWK9m6UQcIH36UAz0z3PqQEzA9m6HDKlZNT3sbiJtuWqSd0hi/icg7Y8KOMwADTsXJwkvIXwEgLLpH29PX4GMywKfcKJsK9i/IVz5KE0H52lUYLq+HgHMCLQt4GacXz9v5n0kjbASMdANXUNhT1QuJiGSq0ULG6G7oiIWFzkMP1C0MjYPr1Zihzhpjfzb7XPPQQOnZiR9uS6CwTsH/Ql+KFU++0OQ+grCyyecV5ZiTFhWxtJ7qQqRw=
