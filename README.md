@@ -76,3 +76,13 @@ The [Cloud4RPi library](http://platformio.org/lib/show/2045/cloud4rpi-esp-arduin
 10. Add a new **Chart** widget and bind it to the `Uptime` variable.
 10. Add a new **Switch** widget and bind it to the `LED On` variable.
 11. Add a new **Text** widget and bind it to the `STATUS` variable. Configure different colors for the **"IDLE"**, **"RING"** and **"BOOM!"** strings.
+
+
+
+## See Also
+
+* [Library and Examples for ESP8266 with MicroPython](https://github.com/cloud4rpi/cloud4rpi-esp8266-micropython)
+* [Examples for Raspberry Pi](https://github.com/cloud4rpi/cloud4rpi-raspberrypi-python)
+* [Examples for Next Thing Co. C.H.I.P.](https://github.com/cloud4rpi/cloud4rpi-chip-python)
+* [Examples for Onion Omega2](https://github.com/cloud4rpi/cloud4rpi-omega2-python)
+* [Documentation Repository](https://github.com/cloud4rpi/docs)
