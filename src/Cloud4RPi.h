@@ -60,10 +60,12 @@ public:
     void declareBoolVariable(const String& varName, C4R_HANDLER_SIGNATURE = NULL);
     void declareNumericVariable(const String& varName);
     void declareStringVariable(const String& varName);
+    void declareDiagVariable(const String& varName);
 
     bool getBoolValue(const String& varName);
     double getNumericValue(const String& varName);
     String getStringValue(const String& varName);
+    String getDiagValue(const String& varName);
 
     void setVariable(const String& varName, bool value);
     void setVariable(const String& varName, int value);
@@ -73,9 +75,11 @@ public:
     void setVariable(const String& varName, float value);
     void setVariable(const String& varName, double value);
     void setVariable(const String& varName, String value);
+    void setDiagVariable(const String& varName, String value);
 
     bool publishConfig();
     bool publishData();
+    bool publishDiag();
 
     void printLogo();
 private:
@@ -84,9 +88,10 @@ private:
     int port;
     PubSubClient* mqttClient;
     C4RVariableStorage* variables;
+    C4RVariableStorage* diagnostics;
     int jsonBufferSize;
 
-    bool isVariableExists(const String& varName);
+    bool isVariableExists(const String& varName, bool isDiag = false);
     bool publishCore(JsonObject& root, const String& subTopic);
     JsonVariant getVariantValue(const String& name, const String& type);
     void mqttCallback(char* topic, byte* payload, unsigned int length);

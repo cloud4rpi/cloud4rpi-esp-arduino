@@ -7,8 +7,10 @@ char wifiPassword[] = "__PASSWORD__";
 
 int ledPin = BUILTIN_LED;
 
-int timerCountDown = 0;
-const int  publishPeriod = 15; // seconds
+const int dataSendingInterval = 30000; // milliseconds
+const int diagSendingInterval = 60000; // milliseconds
+unsigned long lastDataSent = 0;
+unsigned long lastDiagSent = 0;
 
 const int eventCount = 3;
 String events[eventCount] = {
@@ -39,36 +41,50 @@ void setup() {
     c4r.declareStringVariable("State");
 
     c4r.publishConfig();
-    c4r.loop();
 
+    c4r.declareDiagVariable("IP Address");
+    c4r.declareDiagVariable("RSSI"); // WiFi signal strength
+
+    c4r.loop();
     delay(1000);
 }
 
 void loop() {
     ensureWiFiConnection();
+
     if (c4r.ensureConnection(3)) { // number of attempts
-        c4r.setVariable("Uptime", millis() / 1000);
-        String newEvent = events[random(eventCount)];
-        c4r.setVariable("State", newEvent);
+        unsigned long currentMillis = millis();
 
-        c4r.publishData();
+        if (currentMillis - lastDataSent >= dataSendingInterval) {
+            Serial.println();
+            c4r.setVariable("Uptime", currentMillis / 1000);
+            String newEvent = events[random(eventCount)];
+            c4r.setVariable("State", newEvent);
 
-        Serial.println("Variables state: ");
-        Serial.print("LED On = ");
-        Serial.println(c4r.getBoolValue("LED On"));
-        Serial.print("Uptime = ");
-        Serial.println(c4r.getNumericValue("Uptime"), 0);
-        Serial.print("State = ");
-        Serial.println(newEvent);
+            c4r.publishData();
+            lastDataSent = currentMillis;
 
-        timerCountDown = publishPeriod;
-        while(timerCountDown--) {
-            c4r.loop();
-
-            Serial.print(".");
-            delay(1000);
+            Serial.println("Variables state: ");
+            Serial.print("LED On = ");
+            Serial.println(c4r.getBoolValue("LED On"));
+            Serial.print("Uptime = ");
+            Serial.println(c4r.getNumericValue("Uptime"), 0);
+            Serial.print("State = ");
+            Serial.println(newEvent);
         }
-        Serial.println();
+
+        if (currentMillis - lastDiagSent >= diagSendingInterval) {
+            Serial.println();
+            c4r.setDiagVariable("RSSI", (String)WiFi.RSSI() + " dBm");
+            c4r.setDiagVariable("IP Address", WiFi.localIP().toString());
+
+            c4r.publishDiag();
+            lastDiagSent = currentMillis;
+        }
+
+        c4r.loop();
+        Serial.print(".");
+        delay(1000);
   }
 }
 
@@ -81,8 +97,13 @@ void ensureWiFiConnection() {
         }
         Serial.print("Connected! ");
         Serial.print("IP: ");
-        Serial.println(WiFi.localIP());
-    }
+        Serial.print(WiFi.localIP());
+        WiFi.printDiag(Serial);
+
+        // Received signal strength:
+        long rssi = WiFi.RSSI();
+        Serial.print("RSSI:");
+        Serial.println(rssi);    }
 }
 
 bool onLEDCommand(bool value) {
