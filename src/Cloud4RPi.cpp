@@ -18,7 +18,8 @@ Cloud4RPi::Cloud4RPi(const String &_deviceToken, const String &_server, int _por
     port(_port),
     mqttClient(NULL),
     jsonBufferSize(JSON_BUFFER_SIZE),
-    variables(new C4RVariableStorage()) {
+    variables(new C4RVariableStorage()),
+    diagnostics(new C4RVariableStorage()) {
 }
 
 Cloud4RPi::~Cloud4RPi() {
@@ -31,7 +32,13 @@ Cloud4RPi::~Cloud4RPi() {
         delete variables;
         variables = NULL;
     }
+
+    if (diagnostics != NULL) {
+        delete diagnostics;
+        diagnostics = NULL;
+    }
 }
+
 void Cloud4RPi::begin(Client& _client) {
     mqttClient = new PubSubClient(_client);
     mqttClient->setServer(server.c_str(), port);
@@ -100,8 +107,15 @@ void Cloud4RPi::declareStringVariable(const String& varName) {
         variables->declare<char*>(varName, VAR_TYPE_STRING);
     }
 }
-bool Cloud4RPi::isVariableExists(const String& varName) {
-    bool exists = variables->exists(varName);
+
+void Cloud4RPi::declareDiagVariable(const String& varName) {
+    if (!isVariableExists(varName, true)) {
+        diagnostics->declare<char*>(varName, VAR_TYPE_STRING);
+    }
+}
+
+bool Cloud4RPi::isVariableExists(const String& varName, bool isDiag) {
+    bool exists = isDiag ? diagnostics->exists(varName) : variables->exists(varName);
     if (exists) {
         CLOUD4RPI_PRINT("WARN! Duplicate '");
         CLOUD4RPI_PRINT(varName);
@@ -109,6 +123,7 @@ bool Cloud4RPi::isVariableExists(const String& varName) {
     }
     return exists;
 }
+
 bool Cloud4RPi::getBoolValue(const String& varName) {
     return variables->getValue<bool>(varName);
 }
@@ -119,12 +134,16 @@ String Cloud4RPi::getStringValue(const String& varName) {
     return String(variables->getValue<char*>(varName));
 }
 
+String Cloud4RPi::getDiagValue(const String& varName) {
+    return String(diagnostics->getValue<char*>(varName));
+}
+
 void Cloud4RPi::setVariable(const String& varName, bool value) {
     variables->setValue(varName, value);
 }
 
 void Cloud4RPi::setVariable(const String& varName, int value) {
-  variables->setValue(varName, (double)value);
+    variables->setValue(varName, (double)value);
 }
 
 void Cloud4RPi::setVariable(const String& varName, unsigned int value) {
@@ -132,22 +151,27 @@ void Cloud4RPi::setVariable(const String& varName, unsigned int value) {
 }
 
 void Cloud4RPi::setVariable(const String& varName, long value) {
-      variables->setValue(varName, (double)value);
+    variables->setValue(varName, (double)value);
 }
 
 void Cloud4RPi::setVariable(const String& varName, unsigned long value) {
-      variables->setValue(varName, (double)value);
+    variables->setValue(varName, (double)value);
 }
 
 void Cloud4RPi::setVariable(const String& varName, float value) {
-      variables->setValue(varName, (double)value);
+    variables->setValue(varName, (double)value);
 }
 
 void Cloud4RPi::setVariable(const String& varName, double value) {
-      variables->setValue(varName, value);
+    variables->setValue(varName, value);
 }
+
 void Cloud4RPi::setVariable(const String& varName, String value) {
-      variables->setValue(varName, value);
+    variables->setValue(varName, value);
+}
+
+void Cloud4RPi::setDiagVariable(const String& varName, String value) {
+    diagnostics->setValue(varName, value);
 }
 
 bool Cloud4RPi::publishConfig() {
@@ -172,8 +196,8 @@ JsonVariant Cloud4RPi::getVariantValue(const String& name, const String& type) {
       return this->getNumericValue(name);
     }
     if(type == VAR_TYPE_STRING) {
-      return variables->getValue<char*>(name);
-      //FIXME - do not use this->getStringValue(name).c_str() ;
+        return variables->getValue<char*>(name);
+        //FIXME - do not use this->getStringValue(name).c_str() ;
     }
     return NULL;
 }
@@ -188,6 +212,18 @@ bool Cloud4RPi::publishData() {
         payload[info.name] = this->getVariantValue(info.name, info.type);
     }
     return this->publishCore(root, "/data");
+}
+
+bool Cloud4RPi::publishDiag() {
+    DynamicJsonBuffer json(jsonBufferSize);
+    JsonObject& root = json.createObject();
+    JsonObject &payload = root.createNestedObject("payload");
+
+    for(int i = 0; i < diagnostics->size(); i++) {
+        C4RVariableInfo info = diagnostics->getVariableInfo(i);
+        payload[info.name] = this->getDiagValue(info.name);
+    }
+    return this->publishCore(root, "/diagnostics");
 }
 
 bool Cloud4RPi::publishCore(JsonObject& root, const String& subTopic) {
