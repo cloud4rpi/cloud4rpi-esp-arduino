@@ -35,7 +35,7 @@ namespace {
 }
 
 const int C4R_RECONNECT_TIMEOUT = 1000; // milliseconds
-const byte C4R_RETRY_FOREVER = -1;
+const char C4R_RETRY_FOREVER = -1;
 
 class Cloud4RPi {
 friend class C4RMqttCallback;
