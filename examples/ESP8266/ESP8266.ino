@@ -1,7 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <Cloud4RPi.h>
 
-const String deviceToken = "__YOUR__DEVICE_TOKEN__";
+const String deviceToken = "__YOUR_DEVICE_TOKEN__";
 char wifiSSID[] = "__SSID__";
 char wifiPassword[] = "__PASSWORD__";
 
