@@ -10,7 +10,7 @@ public:
     }
 private:
     Cloud4RPi &client;
-}
+};
 
 Cloud4RPi::Cloud4RPi(const String &_deviceToken, const String &_server, int _port) :
     deviceToken(_deviceToken),
@@ -20,6 +20,7 @@ Cloud4RPi::Cloud4RPi(const String &_deviceToken, const String &_server, int _por
     jsonBufferSize(JSON_BUFFER_SIZE),
     variables(new C4RVariableStorage()),
     diagnostics(new C4RVariableStorage()) {
+
 }
 
 Cloud4RPi::~Cloud4RPi() {
