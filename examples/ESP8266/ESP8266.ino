@@ -68,13 +68,13 @@ void loop() {
             lastDataSent = currentMillis;
 
             Serial.println("Variables state: ");
-            Serial.print("LED On = ");
+            Serial.print("* LED = ");
             Serial.println(c4r.getBoolValue("LED On"));
-            Serial.print("Uptime = ");
+            Serial.print("* Uptime = ");
             Serial.println(c4r.getNumericValue("Uptime"), 0);
-            Serial.print("State = ");
+            Serial.print("* State = ");
             Serial.println(newEvent);
-            Serial.print("Desired Temp = ");
+            Serial.print("* Desired Temperature = ");
             Serial.println(c4r.getNumericValue("DesiredTemp"), 1);
         }
 
