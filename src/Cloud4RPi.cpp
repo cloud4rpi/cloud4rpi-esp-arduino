@@ -10,7 +10,7 @@ public:
     }
 private:
     Cloud4RPi &client;
-};
+}
 
 Cloud4RPi::Cloud4RPi(const String &_deviceToken, const String &_server, int _port) :
     deviceToken(_deviceToken),
@@ -26,7 +26,7 @@ Cloud4RPi::~Cloud4RPi() {
     if (mqttClient != NULL) {
         delete mqttClient;
         mqttClient = NULL;
-    };
+    }
 
     if (variables != NULL) {
         delete variables;
