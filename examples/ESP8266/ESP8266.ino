@@ -90,7 +90,7 @@ void loop() {
         c4r.loop();
         Serial.print(".");
         delay(1000);
-  }
+    }
 }
 
 void ensureWiFiConnection() {
@@ -105,20 +105,22 @@ void ensureWiFiConnection() {
         Serial.print(WiFi.localIP());
         WiFi.printDiag(Serial);
 
-        // Received signal strength:
-        long rssi = WiFi.RSSI();
+        long rssi = WiFi.RSSI();  // Received signal strength
         Serial.print("RSSI:");
-        Serial.println(rssi);    }
+        Serial.println(rssi);
+    }
 }
 
 bool onLEDCommand(bool value) {
+    Serial.print("LED state set to ");
+    Serial.println(value);
     digitalWrite(ledPin, value ? LOW : HIGH);
     return !digitalRead(ledPin);
 }
 
 double onDesiredTempCommand(double value) {
-    Serial.print("[x] Desired temperature set to ");
+    Serial.print("Desired temperature set to ");
     Serial.println(value, 1);
-    // Write your own control logic here
+    // Control the heater
     return value;
 }
