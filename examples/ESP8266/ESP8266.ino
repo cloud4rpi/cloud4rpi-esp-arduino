@@ -24,6 +24,7 @@ WiFiClient wifiClient;
 
 void ensureWiFiConnection();
 bool onLEDCommand(bool value);
+double onDesiredTempCommand(double value);
 
 void setup() {
     Serial.begin(9600);
@@ -39,6 +40,8 @@ void setup() {
     c4r.declareBoolVariable("LED On", onLEDCommand);
     c4r.declareNumericVariable("Uptime");
     c4r.declareStringVariable("State");
+    c4r.declareNumericVariable("DesiredTemp", onDesiredTempCommand);
+    c4r.setVariable("DesiredTemp", 22.5f);
 
     c4r.publishConfig();
 
@@ -71,6 +74,8 @@ void loop() {
             Serial.println(c4r.getNumericValue("Uptime"), 0);
             Serial.print("State = ");
             Serial.println(newEvent);
+            Serial.print("Desired Temp = ");
+            Serial.println(c4r.getNumericValue("DesiredTemp"), 1);
         }
 
         if (currentMillis - lastDiagSent >= diagSendingInterval) {
@@ -109,4 +114,11 @@ void ensureWiFiConnection() {
 bool onLEDCommand(bool value) {
     digitalWrite(ledPin, value ? LOW : HIGH);
     return !digitalRead(ledPin);
+}
+
+double onDesiredTempCommand(double value) {
+    Serial.print("[x] Desired temperature set to ");
+    Serial.println(value, 1);
+    // Write your own control logic here
+    return value;
 }

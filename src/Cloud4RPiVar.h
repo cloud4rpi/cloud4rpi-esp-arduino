@@ -6,9 +6,13 @@
 
 #ifdef ESP8266
 #include <functional>
-#define C4R_HANDLER_SIGNATURE std::function<bool(bool)> cmdHandler
+#define C4R_BOOL_HANDLER_SIGNATURE std::function<bool(bool)> cmdHandler
+#define C4R_NUMERIC_HANDLER_SIGNATURE std::function<double(double)> cmdHandler
+#define C4R_T_HANDLER_SIGNATURE std::function<T(T)> cmdHandler
 #else
-#define C4R_HANDLER_SIGNATURE bool (*cmdHandler)(bool)
+#define C4R_BOOL_HANDLER_SIGNATURE bool (*cmdHandler)(bool)
+#define C4R_NUMERIC_HANDLER_SIGNATURE double (*cmdHandler)(double)
+#define C4R_T_HANDLER_SIGNATURE (*cmdHandler)(T)
 #endif
 
 
@@ -37,7 +41,7 @@ class C4RVariable : public C4RVariableBase {
 private:
   String type;
   T value;
-  C4R_HANDLER_SIGNATURE;
+  C4R_T_HANDLER_SIGNATURE;
 public:
     C4RVariable(const String& _name, const String& _type, T _value) :
         C4RVariableBase(_name),
@@ -49,12 +53,12 @@ public:
     T getValue() { return value; };
     void setValue(T _value) { value = _value; }
     bool hasHandler() {  return cmdHandler != NULL; };
-    void setHandler(C4R_HANDLER_SIGNATURE) { this->cmdHandler = cmdHandler; }
-    T handleCommand(T value) {
+    void setHandler(C4R_T_HANDLER_SIGNATURE) { this->cmdHandler = cmdHandler; }
+    void handleCommand(T value) {
         if (cmdHandler) {
-            return cmdHandler(value);
+            T newValue = cmdHandler(value);
+            setValue(newValue);
         }
-        return NULL;
     }
 };
 
@@ -89,7 +93,7 @@ public:
     bool exists(const String& varName);
 
     template<typename T>
-    void declare(const String& varName, const String& varType, C4R_HANDLER_SIGNATURE = NULL) {
+    void declare(const String& varName, const String& varType, C4R_T_HANDLER_SIGNATURE = NULL) {
         C4RVariable<T>* item = new C4RVariable<T>(varName, varType, T());
         item->setHandler(cmdHandler);
         list->add(item);
@@ -114,15 +118,14 @@ public:
         }
     }
 
-    bool canHandleCommand(const String& command) {
-        C4RVariableBase* var = list->find(command);
-        return var && var->hasHandler();
+    C4RVariableBase* find(const String& name) {
+        return list->find(name);
     }
 
     template<typename T>
-    T handleCommand(const String& command, T _value) { // optimize double find
+    void handleCommand(const String& command, T _value) { // optimize double find
         C4RVariable<T>* var = (C4RVariable<T>*)list->find(command);
-        return var->handleCommand(_value);
+        var->handleCommand(_value);
     }
 };
 #endif // _CLOUD4RPIVAR_H

@@ -57,8 +57,8 @@ public:
     bool connected();
     bool loop();
 
-    void declareBoolVariable(const String& varName, C4R_HANDLER_SIGNATURE = NULL);
-    void declareNumericVariable(const String& varName);
+    void declareBoolVariable(const String& varName, C4R_BOOL_HANDLER_SIGNATURE = NULL);
+    void declareNumericVariable(const String& varName, C4R_NUMERIC_HANDLER_SIGNATURE = NULL);
     void declareStringVariable(const String& varName);
     void declareDiagVariable(const String& varName);
 
@@ -95,6 +95,6 @@ private:
     bool publishCore(JsonObject& root, const String& subTopic);
     JsonVariant getVariantValue(const String& name, const String& type);
     void mqttCallback(char* topic, byte* payload, unsigned int length);
-    void onCommand(const String& command, bool value);
+    void onCommand(const String& command, JsonVariant value);
 };
 #endif // _CLOUD4RPI_H

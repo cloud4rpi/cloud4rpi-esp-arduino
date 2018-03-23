@@ -90,15 +90,15 @@ bool Cloud4RPi::ensureConnection(int maxReconnectAttempts, int reconnectTimeout)
     return true;
 }
 
-void Cloud4RPi::declareBoolVariable(const String& varName, C4R_HANDLER_SIGNATURE) {
+void Cloud4RPi::declareBoolVariable(const String& varName, C4R_BOOL_HANDLER_SIGNATURE) {
     if (!isVariableExists(varName)) {
         variables->declare<bool>(varName, VAR_TYPE_BOOL, cmdHandler);
      }
 }
 
-void Cloud4RPi::declareNumericVariable(const String& varName) {
+void Cloud4RPi::declareNumericVariable(const String& varName, C4R_NUMERIC_HANDLER_SIGNATURE) {
       if (!isVariableExists(varName)) {
-        variables->declare<double>(varName, VAR_TYPE_NUMERIC);
+        variables->declare<double>(varName, VAR_TYPE_NUMERIC, cmdHandler);
       }
 }
 
@@ -262,21 +262,30 @@ void Cloud4RPi::mqttCallback(char* topic, byte* payload, unsigned int length) {
         return;
     }
     for(JsonObject::iterator item=root.begin(); item!=root.end(); ++item) {
-        String key = item->key;
-        bool value = item->value; // TODO other types!
-        this->onCommand(key, value);
+        this->onCommand(item->key, item->value);
     }
 }
-void Cloud4RPi::onCommand(const String& command, bool value) {
-    if (variables->canHandleCommand(command)) {
-        bool newValue = variables->handleCommand<bool>(command, value);
-        setVariable(command, newValue);
-        publishData();
-    } else {
+
+void Cloud4RPi::onCommand(const String& command, JsonVariant value) {
+    C4RVariableBase* item = variables->find(command);
+    if (!item) {
+        CLOUD4RPI_PRINT("Variable ''");
+        CLOUD4RPI_PRINT(command);
+        CLOUD4RPI_PRINTLN("' not found.");
+    }
+    if (!item->hasHandler()) {
         CLOUD4RPI_PRINT("No handler for '");
         CLOUD4RPI_PRINT(command);
         CLOUD4RPI_PRINTLN("' command.");
     }
+    String type = item->getType();
+     if(type == VAR_TYPE_BOOL) {
+         variables->handleCommand<bool>(command, value.as<bool>());
+     }
+     if(type == VAR_TYPE_NUMERIC) {
+         variables->handleCommand<double>(command, value.as<double>());
+     }
+     publishData();
 }
 
 void Cloud4RPi::printLogo() {
