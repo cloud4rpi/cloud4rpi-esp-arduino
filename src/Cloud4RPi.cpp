@@ -272,20 +272,23 @@ void Cloud4RPi::onCommand(const String& command, JsonVariant value) {
         CLOUD4RPI_PRINT("Variable ''");
         CLOUD4RPI_PRINT(command);
         CLOUD4RPI_PRINTLN("' not found.");
+        return;
     }
     if (!item->hasHandler()) {
         CLOUD4RPI_PRINT("No handler for '");
         CLOUD4RPI_PRINT(command);
         CLOUD4RPI_PRINTLN("' command.");
+        return;
     }
-    String type = item->getType();
-     if(type == VAR_TYPE_BOOL) {
-         variables->handleCommand<bool>(command, value.as<bool>());
-     }
-     if(type == VAR_TYPE_NUMERIC) {
-         variables->handleCommand<double>(command, value.as<double>());
-     }
-     publishData();
+    switch (item->getType()) {
+        case VAR_TYPE_BOOL:
+            variables->handleCommand<bool>(command, value.as<bool>());
+            break;
+        case VAR_TYPE_NUMERIC:
+            variables->handleCommand<double>(command, value.as<double>());
+            break;
+    }
+    publishData();
 }
 
 void Cloud4RPi::printLogo() {
