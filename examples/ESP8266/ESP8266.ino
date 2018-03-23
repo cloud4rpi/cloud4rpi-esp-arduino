@@ -69,7 +69,7 @@ void loop() {
 
             Serial.println("Variables state: ");
             Serial.print("* LED = ");
-            Serial.println(c4r.getBoolValue("LED On") ? "On" : "Off");
+            Serial.println(c4r.getBoolValue("LED On") ? "Off" : "On");
             Serial.print("* Uptime = ");
             Serial.println(c4r.getNumericValue("Uptime"), 0);
             Serial.print("* State = ");
