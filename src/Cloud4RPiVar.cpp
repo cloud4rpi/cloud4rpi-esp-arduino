@@ -2,6 +2,7 @@
 
 C4RVariableBase::C4RVariableBase(const String& _name) :
     name(_name) {
+
 }
 
 String C4RVariableBase::getName() {
@@ -65,6 +66,7 @@ void C4RVariableList::add(C4RVariableBase* _variable) {
 
 C4RVariableStorage::C4RVariableStorage() :
     list(new C4RVariableList()) {
+
 }
 
 C4RVariableStorage::~C4RVariableStorage() {

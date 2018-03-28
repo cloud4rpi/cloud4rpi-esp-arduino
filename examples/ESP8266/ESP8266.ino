@@ -24,6 +24,7 @@ WiFiClient wifiClient;
 
 void ensureWiFiConnection();
 bool onLEDCommand(bool value);
+double onDesiredTempCommand(double value);
 
 void setup() {
     Serial.begin(9600);
@@ -39,6 +40,8 @@ void setup() {
     c4r.declareBoolVariable("LED On", onLEDCommand);
     c4r.declareNumericVariable("Uptime");
     c4r.declareStringVariable("State");
+    c4r.declareNumericVariable("DesiredTemp", onDesiredTempCommand);
+    c4r.setVariable("DesiredTemp", 22.5f);
 
     c4r.publishConfig();
 
@@ -64,13 +67,15 @@ void loop() {
             c4r.publishData();
             lastDataSent = currentMillis;
 
-            Serial.println("Variables state: ");
-            Serial.print("LED On = ");
-            Serial.println(c4r.getBoolValue("LED On"));
-            Serial.print("Uptime = ");
+            Serial.println("Variables state:");
+            Serial.print("  LED = ");
+            Serial.println(c4r.getBoolValue("LED On") ? "On" : "Off");
+            Serial.print("  Uptime = ");
             Serial.println(c4r.getNumericValue("Uptime"), 0);
-            Serial.print("State = ");
+            Serial.print("  State = ");
             Serial.println(newEvent);
+            Serial.print("  Desired Temperature = ");
+            Serial.println(c4r.getNumericValue("DesiredTemp"), 1);
         }
 
         if (currentMillis - lastDiagSent >= diagSendingInterval) {
@@ -85,7 +90,7 @@ void loop() {
         c4r.loop();
         Serial.print(".");
         delay(1000);
-  }
+    }
 }
 
 void ensureWiFiConnection() {
@@ -100,13 +105,22 @@ void ensureWiFiConnection() {
         Serial.print(WiFi.localIP());
         WiFi.printDiag(Serial);
 
-        // Received signal strength:
-        long rssi = WiFi.RSSI();
+        long rssi = WiFi.RSSI();  // Received signal strength
         Serial.print("RSSI:");
-        Serial.println(rssi);    }
+        Serial.println(rssi);
+    }
 }
 
 bool onLEDCommand(bool value) {
+    Serial.print("LED state set to ");
+    Serial.println(value);
     digitalWrite(ledPin, value ? LOW : HIGH);
     return !digitalRead(ledPin);
+}
+
+double onDesiredTempCommand(double value) {
+    Serial.print("Desired temperature set to ");
+    Serial.println(value, 1);
+    // Control the heater
+    return value;
 }
