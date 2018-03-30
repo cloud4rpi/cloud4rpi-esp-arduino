@@ -18,7 +18,7 @@
     ],
     "dependencies": {
       "PubSubClient": "^2.6",
-      "ArduinoJson": "^5.12.0"
+      "ArduinoJson": "^5.13.1"
     },
     "build": {
       "flags": "-DMQTT_MAX_PACKET_SIZE=1024 -DMQTT_MAX_TRANSFER_SIZE=128"
