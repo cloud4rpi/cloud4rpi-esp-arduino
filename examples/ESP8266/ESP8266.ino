@@ -1,11 +1,20 @@
-#include <ESP8266WiFi.h>
+#if defined(ESP8266)
+    #include <ESP8266WiFi.h>
+#elif defined(ESP32)
+    #include "WiFi.h"
+#endif
+
 #include <Cloud4RPi.h>
 
 const String deviceToken = "__YOUR_DEVICE_TOKEN__";
 char wifiSSID[] = "__SSID__";
 char wifiPassword[] = "__PASSWORD__";
 
-int ledPin = BUILTIN_LED;
+#define SERIAL_BOUND_RATE 115200 // bits per second
+
+#ifndef LED_BUILTIN
+#define LED_BUILTIN 2
+#endif
 
 const int dataSendingInterval = 30000; // milliseconds
 const int diagSendingInterval = 60000; // milliseconds
@@ -27,11 +36,11 @@ bool onLEDCommand(bool value);
 double onDesiredTempCommand(double value);
 
 void setup() {
-    Serial.begin(9600);
+    Serial.begin(SERIAL_BOUND_RATE);
     ensureWiFiConnection();
 
-    pinMode(ledPin, OUTPUT);
-    digitalWrite(ledPin, HIGH);
+    pinMode(LED_BUILTIN, OUTPUT);
+    digitalWrite(LED_BUILTIN, LOW);
 
     c4r.begin(wifiClient);
     c4r.printLogo();
@@ -114,8 +123,8 @@ void ensureWiFiConnection() {
 bool onLEDCommand(bool value) {
     Serial.print("LED state set to ");
     Serial.println(value);
-    digitalWrite(ledPin, value ? LOW : HIGH);
-    return !digitalRead(ledPin);
+    digitalWrite(LED_BUILTIN, value ? HIGH : LOW);
+    return digitalRead(LED_BUILTIN);
 }
 
 double onDesiredTempCommand(double value) {
