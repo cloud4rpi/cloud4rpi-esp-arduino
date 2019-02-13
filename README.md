@@ -7,6 +7,7 @@ The package provides a client library that simplifies connecting Internet-enable
 Currently supported hardware:
 
 * [ESP8266](https://en.wikipedia.org/wiki/ESP8266) boards (like [NodeMCU Dev Kit](http://www.nodemcu.com/index_en.html#fr_54747661d775ef1a3600009e) and others).
+* [ESP32](https://en.wikipedia.org/wiki/ESP32) boards (like [ESP32-DevKitC](https://www.espressif.com/en/products/hardware/esp32-devkitc/overview) and others)
 
 Supported ecosystems:
 
@@ -32,21 +33,21 @@ The [Cloud4RPi library](http://platformio.org/lib/show/2045/cloud4rpi-esp-arduin
     ; Enables the verbose output to Serial
         -D CLOUD4RPI_DEBUG=1
     ```
-4. Save the `platformio.ini` file and open the `src\main.cpp` file.
-5. Copy-paste the [sample code](examples/ESP8266/ESP8266.ino) into it. <!-- common part begins here -->
-4. [Log in to your Cloud4RPi account](https://cloud4rpi.io/signin) or [create a new one](https://cloud4rpi.io/register).
-5. Copy [your device](https://cloud4rpi.io/devices)'s **Device Token**. You can create a device on the [Devices](https://cloud4rpi.io/devices) page and copy its **Device Token** if you do not have one.
-6. Replace the `__YOUR_DEVICE_TOKEN__` string with your device token.
-7. Replace the `__SSID__` and `__PASSWORD__` strings with your Wi-Fi network data.
-7. If you know the pin number connected to an LED on your board, replace the `BUILTIN_LED` constant with it.
-6. Hit the `Build` button and wait until the compilation is done.
-8. Connect the board in the flashing mode and hit the `Upload` button.
-9. Once flashing is complete, open `Serial Monitor` and watch the sample code's output.
-8. Notice that the [device](https://cloud4rpi.io/devices) went online and started sending data.
-9. Go to the [Control Panels](https://cloud4rpi.io/control-panels/) page and add a new control panel.
-10. Add a new **Chart** widget and bind it to the `Uptime` variable.
-10. Add a new **Switch** widget and bind it to the `LED On` variable.
-11. Add a new **Text** widget and bind it to the `STATUS` variable. Configure different colors for the **"IDLE"**, **"RING"** and **"BOOM!"** strings.
+3. Save the `platformio.ini` file and open the `src\main.cpp` file.
+4. Copy-paste the [sample code](examples/ESP8266/ESP8266.ino) into it. <!-- common part begins here -->
+5. [Log in to your Cloud4RPi account](https://cloud4rpi.io/signin) or [create a new one](https://cloud4rpi.io/register).
+6. Copy [your device](https://cloud4rpi.io/devices)'s **Device Token**. You can create a device on the [Devices](https://cloud4rpi.io/devices) page and copy its **Device Token** if you do not have one.
+7. Replace the `__YOUR_DEVICE_TOKEN__` string with your device token.
+8. Replace the `__SSID__` and `__PASSWORD__` strings with your Wi-Fi network data.
+9. If your board does not have a built-in LED, connect an LED to `GPIO2` or change the pin number in the `LED_BUILTIN` constant definition.
+10. Hit the `Build` button and wait until the compilation is done.
+11. Connect the board in the flashing mode and hit the `Upload` button.
+12. Once flashing is complete, open `Serial Monitor` and watch the sample code's output.
+13. Notice that the [device](https://cloud4rpi.io/devices) went online and started sending data.
+14. Go to the [Control Panels](https://cloud4rpi.io/control-panels/) page and add a new control panel.
+15. Add a new **Chart** widget and bind it to the `Uptime` variable.
+16. Add a new **Switch** widget and bind it to the `LED On` variable.
+17. Add a new **Text** widget and bind it to the `STATUS` variable. Configure different colors for the **"IDLE"**, **"RING"** and **"BOOM!"** strings.
 
 
 ## Arduino
@@ -63,20 +64,19 @@ The [Cloud4RPi library](http://platformio.org/lib/show/2045/cloud4rpi-esp-arduin
         ```
     3. Open the `%HOMEPATH%\Documents\Arduino\libraries\cloud4rpi-esp-arduino\src\Cloud4RPi.h` (`~/Documents/Arduino/libraries/cloud4rpi-esp-arduino/src/Cloud4RPi.h` on Mac) file and enable verbose output by adding the `#define CLOUD4RPI_DEBUG 1` line at the beginning.
 5. Open the sample code using the **File** | **Examples** | **cloud4rpi-esp-arduino** | **ESP8266** menu item. Restart Arduino IDE if this item did not appear. <!-- common part begins here -->
-4. [Log in to your Cloud4RPi account](https://cloud4rpi.io/signin) or [create a new one](https://cloud4rpi.io/register).
-5. Copy [your device](https://cloud4rpi.io/devices)'s **Device Token**. You can create a device on the [Devices](https://cloud4rpi.io/devices) page and copy its **Device Token** if you do not have one.
-6. Replace the `__YOUR_DEVICE_TOKEN__` string with your device token.
-7. Replace the `__SSID__` and `__PASSWORD__` strings with your Wi-Fi network data.
-7. If you know the pin number connected to an LED on your board, replace the `BUILTIN_LED` constant with it.
-6. Hit the `Verify` button and wait until the compilation is done.
-8. Connect the board in the flashing mode and hit the `Upload` button.
-9. Once flashing is complete, open `Serial Monitor` and watch the sample code's output.
-8. Notice that the [device](https://cloud4rpi.io/devices) went online and started sending data.
-9. Go to the [Control Panels](https://cloud4rpi.io/control-panels/) page and add a new control panel.
-10. Add a new **Chart** widget and bind it to the `Uptime` variable.
-10. Add a new **Switch** widget and bind it to the `LED On` variable.
-11. Add a new **Text** widget and bind it to the `STATUS` variable. Configure different colors for the **"IDLE"**, **"RING"** and **"BOOM!"** strings.
-
+6. [Log in to your Cloud4RPi account](https://cloud4rpi.io/signin) or [create a new one](https://cloud4rpi.io/register).
+7. Copy [your device](https://cloud4rpi.io/devices)'s **Device Token**. You can create a device on the [Devices](https://cloud4rpi.io/devices) page and copy its **Device Token** if you do not have one.
+8. Replace the `__YOUR_DEVICE_TOKEN__` string with your device token.
+9. Replace the `__SSID__` and `__PASSWORD__` strings with your Wi-Fi network data.
+10. If your board does not have a built-in LED, connect an LED to `GPIO2` or change the pin number in the `LED_BUILTIN` constant definition.
+11. Hit the `Verify` button and wait until the compilation is done.
+12. Connect the board in the flashing mode and hit the `Upload` button.
+13. Once flashing is complete, open `Serial Monitor` and watch the sample code's output.
+14. Notice that the [device](https://cloud4rpi.io/devices) went online and started sending data.
+15. Go to the [Control Panels](https://cloud4rpi.io/control-panels/) page and add a new control panel.
+16. Add a new **Chart** widget and bind it to the `Uptime` variable.
+17. Add a new **Switch** widget and bind it to the `LED On` variable.
+18. Add a new **Text** widget and bind it to the `STATUS` variable. Configure different colors for the **"IDLE"**, **"RING"** and **"BOOM!"** strings.
 
 
 ## See Also
