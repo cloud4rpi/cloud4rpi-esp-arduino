@@ -251,7 +251,7 @@ void Cloud4RPi::mqttCallback(char* topic, byte* payload, unsigned int length) {
     CLOUD4RPI_PRINTLN();
     CLOUD4RPI_PRINT(s.substring(s.lastIndexOf("/")));
     CLOUD4RPI_PRINT(" --> ");
-    for (int i = 0; i < length; i++) {
+    for (unsigned int i = 0; i < length; i++) {
       CLOUD4RPI_PRINT((char)payload[i]);
     }
     CLOUD4RPI_PRINTLN();
