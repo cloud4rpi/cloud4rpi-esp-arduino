@@ -10,7 +10,7 @@ const String deviceToken = "__YOUR_DEVICE_TOKEN__";
 char wifiSSID[] = "__SSID__";
 char wifiPassword[] = "__PASSWORD__";
 
-#define SERIAL_BOUND_RATE 9600 // bits per second
+#define SERIAL_BAUD_RATE 9600 // bits per second
 
 #ifndef LED_BUILTIN
 #define LED_BUILTIN 2
@@ -36,7 +36,7 @@ bool onLEDCommand(bool value);
 double onDesiredTempCommand(double value);
 
 void setup() {
-    Serial.begin(SERIAL_BOUND_RATE);
+    Serial.begin(SERIAL_BAUD_RATE);
     ensureWiFiConnection();
 
     pinMode(LED_BUILTIN, OUTPUT);
