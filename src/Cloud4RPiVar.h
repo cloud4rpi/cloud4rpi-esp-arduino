@@ -12,7 +12,7 @@
 #else
 #define C4R_BOOL_HANDLER_SIGNATURE bool (*cmdHandler)(bool)
 #define C4R_NUMERIC_HANDLER_SIGNATURE double (*cmdHandler)(double)
-#define C4R_T_HANDLER_SIGNATURE (*cmdHandler)(T)
+#define C4R_T_HANDLER_SIGNATURE T (*cmdHandler)(T)
 #endif
 
 
