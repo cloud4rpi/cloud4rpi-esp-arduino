@@ -17,9 +17,9 @@ Cloud4RPi::Cloud4RPi(const String &_deviceToken, const String &_server, int _por
     server(_server),
     port(_port),
     mqttClient(NULL),
-    jsonBufferSize(JSON_BUFFER_SIZE),
     variables(new C4RVariableStorage()),
-    diagnostics(new C4RVariableStorage()) {
+    diagnostics(new C4RVariableStorage()),
+    jsonBufferSize(JSON_BUFFER_SIZE) {
 
 }
 

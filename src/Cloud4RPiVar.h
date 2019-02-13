@@ -4,7 +4,7 @@
 #include <stddef.h>
 #include <Arduino.h>
 
-#ifdef ESP8266
+#if defined(ESP8266) || defined(ESP32)
 #include <functional>
 #define C4R_BOOL_HANDLER_SIGNATURE std::function<bool(bool)> cmdHandler
 #define C4R_NUMERIC_HANDLER_SIGNATURE std::function<double(double)> cmdHandler
