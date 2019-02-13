@@ -3,7 +3,7 @@ python:
     - "2.7"
 
 env:
-    - PLATFORMIO_CI_SRC=examples/ESP8266/ESP8266.ino
+    - PLATFORMIO_CI_SRC=examples/control/control.ino
 
 install:
     - pip install -U platformio
@@ -16,7 +16,7 @@ install:
     - platformio lib -g install 64 89
 
 script:
-    - platformio ci --lib="." --board=nodemcuv2
+    - platformio ci --lib="." --board=nodemcuv2 --board=esp32dev
 
 notifications:
   slack:
