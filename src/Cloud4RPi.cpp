@@ -176,67 +176,61 @@ void Cloud4RPi::setDiagVariable(const String& varName, String value) {
 }
 
 bool Cloud4RPi::publishConfig() {
-    DynamicJsonBuffer json(jsonBufferSize);
-    JsonObject& root = json.createObject();
-    JsonArray &payload = root.createNestedArray("payload");
+    DynamicJsonDocument doc(jsonBufferSize);
+    JsonObject root = doc.to<JsonObject>();
+    JsonArray payload = root.createNestedArray("payload");
 
     for(int i = 0; i < variables->size(); i++) {
-        JsonObject& item = payload.createNestedObject();
+        JsonObject item = payload.createNestedObject();
         C4RVariableInfo info = variables->getVariableInfo(i);
         item["name"] = info.name;
         item["type"] = info.type;
     }
-    return this->publishCore(root, "/config");
-}
-
-JsonVariant Cloud4RPi::getVariantValue(const String& name, const String& type) {
-    if(type == VAR_TYPE_BOOL) {
-      return this->getBoolValue(name);
-    }
-    if(type == VAR_TYPE_NUMERIC) {
-      return this->getNumericValue(name);
-    }
-    if(type == VAR_TYPE_STRING) {
-        return variables->getValue<char*>(name);
-        //FIXME - do not use this->getStringValue(name).c_str() ;
-    }
-    return NULL;
+    return this->publishCore(doc, "/config");
 }
 
 bool Cloud4RPi::publishData() {
-    DynamicJsonBuffer json(jsonBufferSize);
-    JsonObject& root = json.createObject();
-    JsonObject &payload = root.createNestedObject("payload");
+    DynamicJsonDocument doc(jsonBufferSize);
+    JsonObject root = doc.to<JsonObject>();
+    JsonObject payload = root.createNestedObject("payload");
 
     for(int i = 0; i < variables->size(); i++) {
         C4RVariableInfo info = variables->getVariableInfo(i);
-        payload[info.name] = this->getVariantValue(info.name, info.type);
+        if(info.type == VAR_TYPE_BOOL) {
+          payload[info.name] = this->getBoolValue(info.name);
+        };
+        if(info.type == VAR_TYPE_NUMERIC) {
+          payload[info.name] = this->getNumericValue(info.name);
+        };
+        if(info.type == VAR_TYPE_STRING) {
+            payload[info.name] = this->getStringValue(info.name);
+        };
     }
-    return this->publishCore(root, "/data");
+    return this->publishCore(doc, "/data");
 }
 
 bool Cloud4RPi::publishDiag() {
-    DynamicJsonBuffer json(jsonBufferSize);
-    JsonObject& root = json.createObject();
-    JsonObject &payload = root.createNestedObject("payload");
+    DynamicJsonDocument doc(jsonBufferSize);
+    JsonObject payload = doc.createNestedObject("payload");
 
     for(int i = 0; i < diagnostics->size(); i++) {
         C4RVariableInfo info = diagnostics->getVariableInfo(i);
         payload[info.name] = this->getDiagValue(info.name);
     }
-    return this->publishCore(root, "/diagnostics");
+    return this->publishCore(doc, "/diagnostics");
 }
 
-bool Cloud4RPi::publishCore(JsonObject& root, const String& subTopic) {
+bool Cloud4RPi::publishCore(DynamicJsonDocument doc, const String& subTopic) {
     if(!this->connected()) {
         return false;
     }
+    JsonObject root = doc.as<JsonObject>();
     String topic = "devices/" + deviceToken + subTopic;
     // TODO impl
     // if(currentTime.length() > 0) root["ts"] = currentTime.c_str();
-    int length = root.measureLength() + 1;
+    int length = measureJson(root) + 1;
     char buffer[length];
-    root.printTo(buffer, length);
+    serializeJson(root, buffer, length);
     CLOUD4RPI_PRINT((subTopic + " <-- ").c_str());
     CLOUD4RPI_PRINTLN(buffer);
     bool result = mqttClient->publish(topic.c_str(), buffer);
@@ -251,19 +245,19 @@ void Cloud4RPi::mqttCallback(char* topic, byte* payload, unsigned int length) {
     CLOUD4RPI_PRINTLN();
     CLOUD4RPI_PRINT(s.substring(s.lastIndexOf("/")));
     CLOUD4RPI_PRINT(" --> ");
-    for (int i = 0; i < length; i++) {
+    for (unsigned int i = 0; i < length; i++) {
       CLOUD4RPI_PRINT((char)payload[i]);
     }
     CLOUD4RPI_PRINTLN();
-    DynamicJsonBuffer json(this->jsonBufferSize);
-    JsonObject& root = json.parseObject(payload);
-
-    if(!root.success()) {
+    DynamicJsonDocument doc(this->jsonBufferSize);
+    deserializeJson(doc, payload);
+    if(doc.isNull()) {
         CLOUD4RPI_PRINTLN("ERROR! Unable to parse message");
         return;
     }
+    JsonObject root = doc.as<JsonObject>();
     for(JsonObject::iterator item=root.begin(); item!=root.end(); ++item) {
-        this->onCommand(item->key, item->value);
+        this->onCommand(item->key().c_str(), item->value());
     }
 }
 

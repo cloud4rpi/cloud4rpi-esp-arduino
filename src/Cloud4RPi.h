@@ -92,8 +92,7 @@ private:
     int jsonBufferSize;
 
     bool isVariableExists(const String& varName, bool isDiag = false);
-    bool publishCore(JsonObject& root, const String& subTopic);
-    JsonVariant getVariantValue(const String& name, const String& type);
+    bool publishCore(DynamicJsonDocument doc, const String& subTopic);
     void mqttCallback(char* topic, byte* payload, unsigned int length);
     void onCommand(const String& command, JsonVariant value);
 };
