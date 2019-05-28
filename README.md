@@ -34,7 +34,7 @@ The [Cloud4RPi library](http://platformio.org/lib/show/2045/cloud4rpi-esp-arduin
         -D CLOUD4RPI_DEBUG=1
     ```
 3. Save the `platformio.ini` file and open the `src\main.cpp` file.
-4. Copy-paste the [sample code](examples/ESP8266/ESP8266.ino) into it. <!-- common part begins here -->
+4. Copy-paste the [sample code](examples/control/control.ino) into it. <!-- common part begins here -->
 5. [Log in to your Cloud4RPi account](https://cloud4rpi.io/signin) or [create a new one](https://cloud4rpi.io/register).
 6. Copy [your device](https://cloud4rpi.io/devices)'s **Device Token**. You can create a device on the [Devices](https://cloud4rpi.io/devices) page and copy its **Device Token** if you do not have one.
 7. Replace the `__YOUR_DEVICE_TOKEN__` string with your device token.
@@ -52,18 +52,18 @@ The [Cloud4RPi library](http://platformio.org/lib/show/2045/cloud4rpi-esp-arduin
 
 ## Arduino
 
-1. Create a new Arduino sketch and select your board in the **Tools** | **Board** menu. [Add ESP8266 support](https://github.com/esp8266/Arduino) if required.
+1. Create a new Arduino sketch and select your board in the **Tools** | **Board** menu. Add [ESP8266](https://github.com/esp8266/Arduino#installing-with-boards-manager) or [ESP32](https://github.com/espressif/arduino-esp32/blob/master/docs/arduino-ide/boards_manager.md) if required.
 2. Install the Cloud4RPi library from the **Library Manager**: open the **Sketch** | **Include Library** | **Manage Libraries** menu, enter `cloud4rpi` into the search field and install the **cloud4rpi-esp-arduino** package.
 3. Install **ArduinoJson** and **PubSubClient** libraries. You should do it manually because the **Library Manager** does not manage package dependencies.
 4. Configure the installed libraries:
     1. Open the `%HOMEPATH%\Documents\Arduino\libraries\PubSubClient\src\PubSubClient.h` (`~/Documents/Arduino/libraries/PubSubClient/src/PubSubClient.h` on Mac) file with any text editor (for instance, [VS Code](https://code.visualstudio.com)).
-    2. Add the following define statements at the beginning:
+    2. Add the following define directives at the beginning:
         ```c
         #define MQTT_MAX_PACKET_SIZE 1024
         #define MQTT_MAX_TRANSFER_SIZE 128
         ```
     3. [Optional] Open the `%HOMEPATH%\Documents\Arduino\libraries\cloud4rpi-esp-arduino\src\Cloud4RPi.h` (`~/Documents/Arduino/libraries/cloud4rpi-esp-arduino/src/Cloud4RPi.h` on Mac) file and enable verbose output by adding the `#define CLOUD4RPI_DEBUG 1` line at the beginning.
-5. Open the sample code using the **File** | **Examples** | **cloud4rpi-esp-arduino** | **ESP8266** menu item. Restart Arduino IDE if this item did not appear. <!-- common part begins here -->
+5. Open the sample code using the **File** | **Examples** | **cloud4rpi-esp-arduino** menu item. Restart Arduino IDE if this item did not appear. <!-- common part begins here -->
 6. [Log in to your Cloud4RPi account](https://cloud4rpi.io/signin) or [create a new one](https://cloud4rpi.io/register).
 7. Copy [your device](https://cloud4rpi.io/devices)'s **Device Token**. You can create a device on the [Devices](https://cloud4rpi.io/devices) page and copy its **Device Token** if you do not have one.
 8. Replace the `__YOUR_DEVICE_TOKEN__` string with your device token.
