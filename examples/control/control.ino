@@ -1,9 +1,8 @@
-#if defined(ESP8266)
+#ifdef ESP8266
     #include <ESP8266WiFi.h>
-#elif defined(ESP32)
+#else
     #include <WiFi.h>
 #endif
-
 #include <Cloud4RPi.h>
 
 const String deviceToken = "__YOUR_DEVICE_TOKEN__";
