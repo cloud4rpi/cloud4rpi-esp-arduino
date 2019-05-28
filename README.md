@@ -45,9 +45,12 @@ The [Cloud4RPi library](http://platformio.org/lib/show/2045/cloud4rpi-esp-arduin
 12. Once flashing is complete, open `Serial Monitor` and watch the sample code's output.
 13. Notice that the [device](https://cloud4rpi.io/devices) went online and started sending data.
 14. Go to the [Control Panels](https://cloud4rpi.io/control-panels/) page and add a new control panel.
-15. Add a new **Chart** widget and bind it to the `Uptime` variable.
+15. Add a new **Number** widget and bind it to the `Uptime` variable.
 16. Add a new **Switch** widget and bind it to the `LED On` variable.
-17. Add a new **Text** widget and bind it to the `STATUS` variable. Configure different colors for the **"IDLE"**, **"RING"** and **"BOOM!"** strings.
+17. Add a new **Text** widget and bind it to the `State` variable. Configure different colors for the **"IDLE"**, **"RING"** and **"BOOM!"** strings.
+18. Add a new **Slider** widget and bind it to the `DesiredTemp` variable, set its minimum value to 10 and maximum value to 30.
+19. Add a new **Gauge** widget and bind it to the `DesiredTemp` variable, set its minimum value to 10 and maximum value to 30.
+
 
 
 ## Arduino
@@ -74,9 +77,11 @@ The [Cloud4RPi library](http://platformio.org/lib/show/2045/cloud4rpi-esp-arduin
 13. Once flashing is complete, open `Serial Monitor` and watch the sample code's output.
 14. Notice that the [device](https://cloud4rpi.io/devices) went online and started sending data.
 15. Go to the [Control Panels](https://cloud4rpi.io/control-panels/) page and add a new control panel.
-16. Add a new **Chart** widget and bind it to the `Uptime` variable.
+16. Add a new **Number** widget and bind it to the `Uptime` variable.
 17. Add a new **Switch** widget and bind it to the `LED On` variable.
-18. Add a new **Text** widget and bind it to the `STATUS` variable. Configure different colors for the **"IDLE"**, **"RING"** and **"BOOM!"** strings.
+18. Add a new **Text** widget and bind it to the `State` variable. Configure different colors for the **"IDLE"**, **"RING"** and **"BOOM!"** strings.
+19. Add a new **Slider** widget and bind it to the `DesiredTemp` variable, set its minimum value to 10 and maximum value to 30.
+20. Add a new **Gauge** widget and bind it to the `DesiredTemp` variable, set its minimum value to 10 and maximum value to 30.
 
 
 ## See Also
