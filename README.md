@@ -4,7 +4,7 @@ Cloud4RPi Client Library for [Arduino](https://www.arduino.cc/) Framework
 
 The package provides a client library that simplifies connecting Internet-enabled Arduino devices to the Cloud4RPi service.
 
-Currently supported hardware:
+Supported hardware:
 
 * [ESP8266](https://en.wikipedia.org/wiki/ESP8266) boards (like [NodeMCU Dev Kit](http://www.nodemcu.com/index_en.html#fr_54747661d775ef1a3600009e) and others).
 * [ESP32](https://en.wikipedia.org/wiki/ESP32) boards (like [ESP32-DevKitC](https://www.espressif.com/en/products/hardware/esp32-devkitc/overview) and others).
@@ -39,7 +39,7 @@ The [Cloud4RPi library](http://platformio.org/lib/show/2045/cloud4rpi-esp-arduin
 6. Copy [your device](https://cloud4rpi.io/devices)'s **Device Token**. You can create a device on the [Devices](https://cloud4rpi.io/devices) page and copy its **Device Token** if you do not have one.
 7. Replace the `__YOUR_DEVICE_TOKEN__` string with your device token.
 8. Replace the `__SSID__` and `__PASSWORD__` strings with your Wi-Fi network data.
-9. If the `LED_BUILTIN` constant is not defined in your board's library, change this constant to the pin number to which an LED is connected (for example, `2`).
+9. If the `LED_BUILTIN` constant is not defined in your board's library, change this constant to the LED's pin number (for example, `2`).
 10. Hit the `Build` button and wait until the compilation is done.
 11. Connect the board in the flashing mode and hit the `Upload` button.
 12. Once flashing is complete, open `Serial Monitor` and watch the sample code's output.
