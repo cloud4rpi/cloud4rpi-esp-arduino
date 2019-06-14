@@ -1,7 +1,7 @@
 {
     "name": "cloud4rpi-esp-arduino",
     "keywords": "arduino, nodemcu, esp8266, esp32, mqtt, iot, cloud",
-    "description": "Cloud4RRi client library for ESP8266 based boards and Arduino language",
+    "description": "Cloud4RPi client library for ESP8266 and ESP32 based boards",
     "repository":
     {
       "type": "git",
@@ -23,10 +23,11 @@
     "build": {
       "flags": "-DMQTT_MAX_PACKET_SIZE=1024 -DMQTT_MAX_TRANSFER_SIZE=128"
     },
-    "version": "0.0.7",
+    "version": "0.0.8",
     "examples": "examples/*/*.ino",
     "frameworks": "arduino",
     "platforms": [
-        "espressif8266"
+        "espressif8266",
+        "espressif32"
     ]
 }
