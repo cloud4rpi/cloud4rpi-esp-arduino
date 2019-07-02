@@ -15,7 +15,8 @@ char wifiPassword[] = "__PASSWORD__";
 #define LED_BUILTIN 2
 #endif
 
-const int dataSendingInterval = 30000; // milliseconds
+// Decrease this value for testing purposes.
+const int dataSendingInterval = 300000; // milliseconds
 const int diagSendingInterval = 60000; // milliseconds
 unsigned long lastDataSent = 0;
 unsigned long lastDiagSent = 0;

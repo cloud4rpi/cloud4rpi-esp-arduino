@@ -23,7 +23,7 @@
     "build": {
       "flags": "-DMQTT_MAX_PACKET_SIZE=1024 -DMQTT_MAX_TRANSFER_SIZE=128"
     },
-    "version": "0.0.8",
+    "version": "0.0.9",
     "examples": "examples/*/*.ino",
     "frameworks": "arduino",
     "platforms": [
