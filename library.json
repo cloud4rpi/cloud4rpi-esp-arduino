@@ -1,6 +1,6 @@
 {
     "name": "cloud4rpi-esp-arduino",
-    "keywords": "arduino, nodemcu, esp8266, esp32, mqtt, iot, cloud",
+    "keywords": "arduino, nodemcu, esp8266, esp32, mqtt, iot, cloud, dashboard, control panel, sensors, device",
     "description": "Cloud4RPi client library for ESP8266 and ESP32 based boards",
     "repository":
     {
