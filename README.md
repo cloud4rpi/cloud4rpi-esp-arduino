@@ -22,17 +22,17 @@ The [Cloud4RPi library](http://platformio.org/lib/show/2045/cloud4rpi-esp-arduin
 
 1. Create a new PlatformIO project for your board as described in the PlatformIO documentation ([Visual Studio Code](http://docs.platformio.org/en/latest/ide/vscode.html#id3), [Atom](http://docs.platformio.org/en/latest/ide/atom.html#setting-up-the-project))
 2. Open your `platformio.ini` and add the following lines to the end:
-        ```
-        lib_deps =
-            cloud4rpi-esp-arduino
-        
-        build_flags=
-        ; Required for PubSub library
-            -D MQTT_MAX_PACKET_SIZE=1024
-            -D MQTT_MAX_TRANSFER_SIZE=128
-        ; Enables the verbose output to Serial
-            -D CLOUD4RPI_DEBUG=1
-        ```
+   ```
+   lib_deps =
+       cloud4rpi-esp-arduino
+   
+   build_flags=
+   ; Required for PubSub library
+       -D MQTT_MAX_PACKET_SIZE=1024
+       -D MQTT_MAX_TRANSFER_SIZE=128
+   ; Enables the verbose output to Serial
+       -D CLOUD4RPI_DEBUG=1
+   ```
 3. Save the `platformio.ini` file and open the `src\main.cpp` file.
 4. Copy-paste the sample code ([ESP8266](https://github.com/cloud4rpi/cloud4rpi-esp-arduino/blob/master/examples/ESP8266/ESP8266.ino), [ESP32](https://github.com/cloud4rpi/cloud4rpi-esp-arduino/blob/master/examples/ESP32/ESP32.ino)). <!-- common part begins here -->
 5. [Log in to your Cloud4RPi account](https://cloud4rpi.io/signin) or [create a new one](https://cloud4rpi.io/register).
@@ -61,10 +61,10 @@ The [Cloud4RPi library](http://platformio.org/lib/show/2045/cloud4rpi-esp-arduin
 4. Configure the installed libraries:
     1. Open the `%HOMEPATH%\Documents\Arduino\libraries\PubSubClient\src\PubSubClient.h` (`~/Documents/Arduino/libraries/PubSubClient/src/PubSubClient.h` on Mac) file with any text editor (for instance, [VS Code](https://code.visualstudio.com)).
     2. Add the following define directives at the beginning:
-            ```c
-            #define MQTT_MAX_PACKET_SIZE 1024
-            #define MQTT_MAX_TRANSFER_SIZE 128
-            ```
+       ```c
+       #define MQTT_MAX_PACKET_SIZE 1024
+       #define MQTT_MAX_TRANSFER_SIZE 128
+       ```
     3. [Optional] Open the `%HOMEPATH%\Documents\Arduino\libraries\cloud4rpi-esp-arduino\src\Cloud4RPi.h` (`~/Documents/Arduino/libraries/cloud4rpi-esp-arduino/src/Cloud4RPi.h` on Mac) file and add the `#define CLOUD4RPI_DEBUG 1` line at the beginning to enable verbose output.
 5. Use the **File** | **Examples** | **cloud4rpi-esp-arduino** menu item to open the sample code. Restart Arduino IDE if this item does not appear.
 5. Select the **ESP32 Dev Module** board in **Tools** menu.

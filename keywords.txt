@@ -18,12 +18,15 @@ connected	KEYWORD2
 declareBoolVariable	KEYWORD2
 declareNumericVariable	KEYWORD2
 declareStringVariable	KEYWORD2
+declareDiagVariable 	KEYWORD2
 getBoolValue	KEYWORD2
 getNumericValue	KEYWORD2
 getStringValue	KEYWORD2
+getDiagValue    KEYWORD2
 setVariable	KEYWORD2
 publishConfig	KEYWORD2
 publishData	KEYWORD2
+publishDiag	KEYWORD2
 loop	KEYWORD2
 printLogo	KEYWORD2
 
