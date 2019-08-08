@@ -31,7 +31,7 @@ namespace {
     const String& VAR_TYPE_NUMERIC = "numeric";
     const String& VAR_TYPE_STRING = "string";
 
-    const int JSON_BUFFER_SIZE = 500;
+    const int JSON_BUFFER_SIZE = 1024;
 }
 
 const int C4R_RECONNECT_TIMEOUT = 1000; // milliseconds
@@ -74,9 +74,12 @@ public:
     void setVariable(const String& varName, unsigned long value);
     void setVariable(const String& varName, float value);
     void setVariable(const String& varName, double value);
-    void setVariable(const String& varName, String value);
-    void setDiagVariable(const String& varName, String value);
-
+    void setVariable(const String& varName, const char* value);
+    void setVariable(const String& varName, const String& value);    
+    
+    void setDiagVariable(const String& varName, const char* value);
+    void setDiagVariable(const String& varName, const String& value);
+    
     bool publishConfig();
     bool publishData();
     bool publishDiag();

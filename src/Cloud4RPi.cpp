@@ -25,7 +25,6 @@ Cloud4RPi::Cloud4RPi(const String &_deviceToken, const String &_server, int _por
 
 Cloud4RPi::~Cloud4RPi() {
     if (mqttClient != NULL) {
-        delete mqttClient;
         mqttClient = NULL;
     }
 
@@ -98,9 +97,9 @@ void Cloud4RPi::declareBoolVariable(const String& varName, C4R_BOOL_HANDLER_SIGN
 }
 
 void Cloud4RPi::declareNumericVariable(const String& varName, C4R_NUMERIC_HANDLER_SIGNATURE) {
-      if (!isVariableExists(varName)) {
+    if (!isVariableExists(varName)) {
         variables->declare<double>(varName, VAR_TYPE_NUMERIC, cmdHandler);
-      }
+    }
 }
 
 void Cloud4RPi::declareStringVariable(const String& varName) {
@@ -132,11 +131,11 @@ double Cloud4RPi::getNumericValue(const String& varName) {
     return variables->getValue<double>(varName);
 }
 String Cloud4RPi::getStringValue(const String& varName) {
-    return String(variables->getValue<char*>(varName));
+    return variables->getValue<String>(varName);
 }
 
 String Cloud4RPi::getDiagValue(const String& varName) {
-    return String(diagnostics->getValue<char*>(varName));
+    return diagnostics->getValue<String>(varName);
 }
 
 void Cloud4RPi::setVariable(const String& varName, bool value) {
@@ -167,11 +166,19 @@ void Cloud4RPi::setVariable(const String& varName, double value) {
     variables->setValue(varName, value);
 }
 
-void Cloud4RPi::setVariable(const String& varName, String value) {
+void Cloud4RPi::setVariable(const String& varName, const char* value) {
+    variables->setValue(varName, String(value));
+}
+
+void Cloud4RPi::setVariable(const String& varName, const String& value) {
     variables->setValue(varName, value);
 }
 
-void Cloud4RPi::setDiagVariable(const String& varName, String value) {
+
+void Cloud4RPi::setDiagVariable(const String& varName, const char* value) {
+    diagnostics->setValue(varName, String(value));
+}
+void Cloud4RPi::setDiagVariable(const String& varName, const String& value) {
     diagnostics->setValue(varName, value);
 }
 
