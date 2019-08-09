@@ -18,12 +18,12 @@
     ],
     "dependencies": {
       "PubSubClient": "^2.7",
-      "ArduinoJson": "^6.9.1"
+      "ArduinoJson": "^6.11.3"
     },
     "build": {
       "flags": "-DMQTT_MAX_PACKET_SIZE=1024 -DMQTT_MAX_TRANSFER_SIZE=128"
     },
-    "version": "0.0.10",
+    "version": "0.1.0",
     "examples": "examples/*/*.ino",
     "frameworks": "arduino",
     "platforms": [
