@@ -1,6 +1,6 @@
 Cloud4RPi Client Library for [Arduino](https://www.arduino.cc/) Framework
 =========================================================================
-[![Build Status](https://travis-ci.org/cloud4rpi/cloud4rpi-esp-arduino.svg?branch=master)](https://travis-ci.org/cloud4rpi/loud4rpi-esp-arduino)
+[![Build Status](https://travis-ci.org/cloud4rpi/cloud4rpi-esp-arduino.svg?branch=master)](https://travis-ci.org/cloud4rpi/cloud4rpi-esp-arduino)
 
 The package provides a client library that simplifies connecting Internet-enabled Arduino devices to the Cloud4RPi service.
 
