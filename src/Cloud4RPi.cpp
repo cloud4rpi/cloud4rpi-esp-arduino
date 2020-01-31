@@ -282,14 +282,21 @@ void Cloud4RPi::onCommand(const String& command, JsonVariant value) {
         CLOUD4RPI_PRINTLN("' command.");
         return;
     }
+
+    DynamicJsonDocument doc(jsonBufferSize);
+    JsonObject root = doc.to<JsonObject>();
+    JsonObject payload = root.createNestedObject("payload");
+
     String type = item->getType();
     if(type == VAR_TYPE_BOOL) {
         variables->handleCommand<bool>(command, value.as<bool>());
+        payload[command] = this->getBoolValue(command);
     }
     if(type == VAR_TYPE_NUMERIC) {
         variables->handleCommand<double>(command, value.as<double>());
+        payload[command] = this->getNumericValue(command);
     }
-    publishData();
+    this->publishCore(doc, "/data/cr");
 }
 
 void Cloud4RPi::printLogo() {
