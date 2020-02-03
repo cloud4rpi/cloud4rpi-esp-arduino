@@ -77,6 +77,7 @@ void loop() {
             c4r.setVariable("State", newEvent);
 
             c4r.publishData();
+            dataTimer = dataSendingInterval;
 
             Serial.println(F("Variables state:"));
             Serial.print(F("  LED = "));
