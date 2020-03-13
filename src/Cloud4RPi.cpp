@@ -299,12 +299,16 @@ void Cloud4RPi::onCommand(const String& command, JsonVariant value) {
     this->publishCore(doc, "/data/cr");
 }
 
+String Cloud4RPi::getVersion() {
+    return VERSION;
+}
+
 void Cloud4RPi::printLogo() {
-    CLOUD4RPI_PRINTLN();
-    CLOUD4RPI_PRINTLN("_________ .__                   .___ _________________________.__ ");
-    CLOUD4RPI_PRINTLN("\\_   ___ \\|  |   ____  __ __  __| _//  |  \\______   \\______   \\__|");
-    CLOUD4RPI_PRINTLN("/    \\  \\/|  |  /  _ \\|  |  \\/ __ |/   |  ||       _/|     ___/  |");
-    CLOUD4RPI_PRINTLN("\\     \\___|  |_(  <_> )  |  / /_/ /    ^   /    |   \\|    |   |  |");
-    CLOUD4RPI_PRINTLN(" \\______  /____/\\____/|____/\\____ \\____   ||____|_  /|____|   |__|");
-    CLOUD4RPI_PRINTLN("        \\/                       \\/    |__|       \\/");
+    CLOUD4RPI_PRINTER.println();
+    CLOUD4RPI_PRINTER.println("_________ .__                   .___ _________________________.__ ");
+    CLOUD4RPI_PRINTER.println("\\_   ___ \\|  |   ____  __ __  __| _//  |  \\______   \\______   \\__|");
+    CLOUD4RPI_PRINTER.println("/    \\  \\/|  |  /  _ \\|  |  \\/ __ |/   |  ||       _/|     ___/  |");
+    CLOUD4RPI_PRINTER.println("\\     \\___|  |_(  <_> )  |  / /_/ /    ^   /    |   \\|    |   |  |");
+    CLOUD4RPI_PRINTER.println(" \\______  /____/\\____/|____/\\____ \\____   ||____|_  /|____|   |__|");
+    CLOUD4RPI_PRINTER.println("        \\/                       \\/    |__|       \\/");
 }
