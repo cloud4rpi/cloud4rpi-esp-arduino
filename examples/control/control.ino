@@ -15,9 +15,8 @@ char wifiPassword[] = "__PASSWORD__";
 #define LED_BUILTIN 2
 #endif
 
-// Decrease this value for testing purposes.
-const int dataSendingInterval = 300000; // milliseconds
-const int diagSendingInterval = 60000; // milliseconds
+const int dataSendingInterval = 60000; // milliseconds
+const int diagSendingInterval = 90000; // milliseconds
 const int pollInterval = 1000; // milliseconds
 
 unsigned long dataTimer = 0;
@@ -27,7 +26,7 @@ const int eventCount = 3;
 String events[eventCount] = {
     "IDLE",
     "RING",
-    "BOOM!"
+    "BOOM"
 };
 
 Cloud4RPi c4r(deviceToken);
@@ -60,6 +59,12 @@ void setup() {
     c4r.declareDiagVariable("IP Address");
     c4r.declareDiagVariable("RSSI"); // WiFi signal strength
     c4r.declareDiagVariable("Uptime");
+
+    String v = c4r.getVersion();
+    c4r.declareDiagVariable("Client Version");
+    c4r.setDiagVariable("Client Version", v);
+    Serial.print("Cloud4RPi version: ");
+    Serial.println(v);
 
     c4r.loop();
     delay(1000);
