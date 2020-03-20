@@ -185,6 +185,8 @@ void Cloud4RPi::setDiagVariable(const String& varName, const String& value) {
 bool Cloud4RPi::publishConfig() {
     DynamicJsonDocument doc(jsonBufferSize);
     JsonObject root = doc.to<JsonObject>();
+    root["v"] = VERSION;
+    root["l"] = LANG;
     JsonArray payload = root.createNestedArray("payload");
 
     for(int i = 0; i < variables->size(); i++) {

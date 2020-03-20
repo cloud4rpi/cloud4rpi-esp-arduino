@@ -27,6 +27,7 @@ namespace {
     const String& MQTT_SERVER = "mq.cloud4rpi.io";
     const int MQTT_PORT = 1883;
     const String& VERSION = "1.0.3";
+    const String& LANG = "ard";
 
     const String& VAR_TYPE_BOOL = "bool";
     const String& VAR_TYPE_NUMERIC = "numeric";
